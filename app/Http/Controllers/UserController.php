@@ -53,7 +53,7 @@ class UserController extends Controller
         try{
             $user = user::where('email', $request->email)->first();
 
-            if($user && $user->password === $request->password){
+            if($user && Hash::check($request->password, $user->password)){
                 Auth::guard('user')->login($user);
                 return redirect()->route('user.dashboard', $user->id);
             }
