@@ -15,18 +15,7 @@ class RC4EncryptionService{
         $startTime = microtime(true);
         foreach ($information->getAttributes() as $key => $value) {
             if ($key !== 'id' && $key !== 'crypt' && $key !== 'user_id' && $key !== 'created_at' && $key !== 'updated_at' && $key !== 'duration' && $key !== 'crypt') {
-                if($key === 'biometricVideo' || $key === 'kkDocument' || $key === 'photo1')
-                {
-                    if($key === 'biometricVideo' || $key === 'kkDocument' || $key === 'photo1')
-                    {
-                        $filePath = str_replace('public', 'storage', $value);
-                        $rpath = fopen($filePath, "rb");
-                        $fileContents = fread($rpath, filesize($filePath));
-                        $wpath = fopen($filePath, "wb");
-                        $encryptedContent = $rc4->encrypt($fileContents);
-                        fwrite($wpath, $encryptedContent);
-                    }
-                }
+
                 $encryptedValue = $rc4->encrypt($value);
                 $encryptedInformation[$key] = $encryptedValue;
             } else {

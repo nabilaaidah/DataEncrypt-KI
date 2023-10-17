@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\user;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\UserProvider;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller 
 {
@@ -40,7 +39,7 @@ class UserController extends Controller
             $userData = new user();
             $userData->name = $request->fullname;
             $userData->email = $request->email;
-            $userData->password = Hash::make($request->password);
+            $userData->password = $request->password;
             $userData->save();
 
             return redirect()->route('user.showlogin');
