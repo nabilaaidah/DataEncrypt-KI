@@ -14,7 +14,6 @@ class DESDecryptionService{
         $startTime = microtime(true);
         foreach ($information->getAttributes() as $key => $value) {
             if ($key !== 'id' && $key !== 'crypt' && $key !== 'user_id' && $key !== 'created_at' && $key !== 'updated_at' && $key !== 'duration' && $key !== 'crypt') {
-
                 $decryptValue = $des->decrypt($value);
                 $decryptInformation[$key] = $decryptValue;
             } else {
