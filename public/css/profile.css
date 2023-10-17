@@ -1,0 +1,62 @@
+/* CSS Anda */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f2f2f2; /* Ganti warna latar belakang sesuai kebutuhan Anda */
+    color: #333;
+    margin: 0; /* Tambahkan ini untuk menghapus margin bawaan dari body */
+    padding: 0; /* Tambahkan ini untuk menghapus padding bawaan dari body */
+}
+
+header {
+    text-align: center;
+    color: #020202;
+    padding: 20px; /* Mengurangi padding dari 100px ke 20px (sesuaikan sesuai kebutuhan) */
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+.welcome {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.edit-info, .column-right {
+    width: 45%;
+    padding: 20px;
+    margin: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+footer {
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+/* Tambahkan CSS tambahan ses
