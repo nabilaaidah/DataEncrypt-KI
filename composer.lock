@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa322c53454393ed775cfe4807d54a50",
+    "content-hash": "bb5e4dc97e1afea102adf1d6af4df863",
     "packages": [
         {
             "name": "brick/math",
@@ -60,6 +60,104 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "darkdevlab/encryptor",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/darkdevlab/encryptor.git",
+                "reference": "52679c1bdd52dc69ec602dd6d649bf8fab3ed012"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/darkdevlab/encryptor/zipball/52679c1bdd52dc69ec602dd6d649bf8fab3ed012",
+                "reference": "52679c1bdd52dc69ec602dd6d649bf8fab3ed012",
+                "shasum": ""
+            },
+            "require": {
+                "darkdevlab/enum": "^2.0.0",
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "9.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DarkDevLab\\Encryptor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vladimir Pilipchuk",
+                    "email": "vovapilipchuk@gmail.com"
+                }
+            ],
+            "description": "Encryption component. Support AES, BF, CAMELLIA, CAST5, DES, DESX, GOST, RC2 and RC4 algorithms",
+            "keywords": [
+                "crypt",
+                "encryption"
+            ],
+            "support": {
+                "issues": "https://github.com/darkdevlab/encryptor/issues",
+                "source": "https://github.com/darkdevlab/encryptor/tree/1.0.0"
+            },
+            "time": "2020-05-03T10:01:39+00:00"
+        },
+        {
+            "name": "darkdevlab/enum",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/darkdevlab/enum.git",
+                "reference": "609b7364fc339147a4cd33b06382285be8f2de25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/darkdevlab/enum/zipball/609b7364fc339147a4cd33b06382285be8f2de25",
+                "reference": "609b7364fc339147a4cd33b06382285be8f2de25",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "9.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DarkDevLab\\Enum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vladimir Pilipchuk",
+                    "email": "vovapilipchuk@gmail.com"
+                }
+            ],
+            "description": "Simply PHP enum",
+            "keywords": [
+                "enum",
+                "php-enum"
+            ],
+            "support": {
+                "issues": "https://github.com/darkdevlab/enum/issues",
+                "source": "https://github.com/darkdevlab/enum/tree/v2.0.0"
+            },
+            "time": "2020-05-01T11:06:59+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -5568,6 +5666,39 @@
             "time": "2022-03-08T17:03:00+00:00"
         },
         {
+            "name": "wdalmut/rc4-support",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wdalmut/rc4-support.git",
+                "reference": "5c6237b1a4010b606d527ca94991f449bb787856"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wdalmut/rc4-support/zipball/5c6237b1a4010b606d527ca94991f449bb787856",
+                "reference": "5c6237b1a4010b606d527ca94991f449bb787856",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Corley\\RC4\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "support": {
+                "issues": "https://github.com/wdalmut/rc4-support/issues",
+                "source": "https://github.com/wdalmut/rc4-support/tree/master"
+            },
+            "time": "2015-05-19T21:40:57+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.11.0",
             "source": {
@@ -8075,5 +8206,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

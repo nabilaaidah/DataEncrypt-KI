@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\information;
 use App\Models\user;
 use Illuminate\Http\Request;
+use App\Services\RC4EncryptionService;
+use App\Services\RC4DecryptionService;
+use App\Services\AESEncryptionService;
+use App\Services\AESDecryptionService;
+use App\Services\DESEncryptionService;
+use App\Services\DESDecryptionService;
 
 class InformationController extends Controller
 {
@@ -40,8 +46,18 @@ class InformationController extends Controller
             $data->kkDocument = $request->file('kkDocument')->store('public/doc');
             $data->photo1 = $request->file('photo1')->store('public/photo');
             $data->user_id = $userId;
-            $data->save();
             
+            $encryptRc4 = new RC4EncryptionService();
+            $rc4Data = $encryptRc4->rc4Encryption($data);
+            $rc4Data->save();
+
+            $encryptAes = new AESEncryptionService();
+            $aesData = $encryptAes->aesEncryption($data);
+            $aesData->save();
+
+            $encryptDes = new DESEncryptionService();
+            $desData = $encryptDes->desEncryption($data);
+            $desData->save();
             return redirect()->route('user.dashboard', ['userId' => $userId]);
         }
         catch (\Illuminate\Validation\ValidationException $e){
@@ -50,10 +66,20 @@ class InformationController extends Controller
     }
 
     function showView($userId){
-        $latestInfo = information::where('user_id', $userId)->latest()->first();
+        $decryptRc4 = new RC4DecryptionService();
+        $latestInfo = information::where('user_id', $userId)->where('crypt', 'RC4')->latest()->first();
+        
+        $rc4DurInfo = $latestInfo->duration;
+        $aesDurInfo = information::where('user_id', $userId)->where('crypt', 'AES_256_CBC')
+            ->latest()
+            ->value('duration');
+        $desDurInfo = information::where('user_id', $userId)->where('crypt', 'DES_CBC')
+            ->latest()
+            ->value('duration');
+        $latestInfo = $decryptRc4->rc4Decryption($latestInfo);
 
         if($latestInfo){
-            return view('vieu', ['userId' => $userId, 'latestInfo' => $latestInfo]);
+            return view('vieu', ['userId' => $userId, 'latestInfo' => $latestInfo, 'aesDurInfo' => $aesDurInfo, 'desDurInfo' => $desDurInfo, 'rc4DurInfo' => $rc4DurInfo]);
         }
     }
 }
