@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 // Register
 Route::get('/', [UserController::class, 'showRegister']);
 Route::post('/', [UserController::class, 'storeRegister'])->name('user.register');
@@ -25,15 +24,17 @@ Route::post('/', [UserController::class, 'storeRegister'])->name('user.register'
 Route::get('/user/login', [UserController::class, 'showLogin'])->name('user.showlogin');
 Route::post('/user/login', [UserController::class, 'login'])->name('user.login');
 
-// Route::group(['middleware' => ['noCache', 'revalidate']], function(){
-//     Route::get('/user/form/{userId}', [UserController::class, 'showForm'])->name('user.showform');
-//     Route::post('/user/form/{userId}', [InformationController::class, 'storeInformation'])->name('information.store');
-//     Route::get('/user/view/{userId}', [InformationController::class, 'showView'])->name('user.showview');
-//     Route::post('/user/view/{userId}', [InformationController::class, 'displayView']);
-//     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+// Route::group(['middleware' => 'guest'], function(){
+//         // Register
+//     Route::get('/', [UserController::class, 'showRegister']);
+//     Route::post('/', [UserController::class, 'storeRegister'])->name('user.register');
+
+//     // Login
+//     Route::get('/user/login', [UserController::class, 'showLogin'])->name('user.showlogin');
+//     Route::post('/user/login', [UserController::class, 'login'])->name('user.login');
 // });
 
-Route::group(['middleware' => 'revalidate'], function(){
+Route::middleware(['auth'])->group(function (){
     Route::get('/user/dashboard/{userId}', [UserController::class, 'showDashboard'])->name('user.dashboard');
     Route::get('/user/form/{userId}', [UserController::class, 'showForm'])->name('user.showform');
     Route::post('/user/form/{userId}', [InformationController::class, 'storeInformation'])->name('information.store');

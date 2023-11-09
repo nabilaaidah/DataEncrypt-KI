@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\user;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller 
@@ -52,14 +53,19 @@ class UserController extends Controller
 
     public function login(Request $request){
         try{
-            $user = user::where('email', $request->email)->first();
+            $credentials = $request->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
 
-            if($user && $user->password === $request->password){
-                Auth::guard('user')->login($user);
-                return redirect()->route('user.dashboard', $user->id);
+            if(Auth::attempt($credentials)){
+                $request->session()->regenerate();
+                $user = Auth::user();
+                $userId = $user->id;
+                return redirect()->route('user.dashboard', ['userId' => $userId]);
             }
             else{
-                return redirect()->back()->withErrors(['login_error' => 'Invalid username or password.']);
+                return redirect()->back()->withErrors(['login_error' => 'Email and password invalid!']);
             }
         }
         catch (\Illuminate\Validation\ValidationException $e){
@@ -69,8 +75,9 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        session()->flush();
         Auth::logout();    
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect('/');
     }
 }

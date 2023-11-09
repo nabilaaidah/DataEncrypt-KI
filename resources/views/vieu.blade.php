@@ -18,6 +18,7 @@
         </ul>
     </nav>
     <main>
+        @if ($latestInfo) 
         <section class="personal-data">
             <h2>Data Pribadi Anda</h2>
             <div class="data-row">
@@ -176,6 +177,10 @@
                 <p>{{ $desDurInfo }}</p>
             </div>
         </section>
+
+        @else
+            <p> No data showed </p>
+        @endif
     </main>
 
     <footer>
