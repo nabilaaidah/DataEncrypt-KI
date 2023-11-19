@@ -22,7 +22,7 @@
         }
 
         .column-left, .column-right {
-            width: 45%; /* Sesuaikan lebar kolom sesuai kebutuhan */
+            width: 30%; /* Sesuaikan lebar kolom sesuai kebutuhan */
             padding: 20px;
             border: 1px solid #ccc;
             margin: 10px;
@@ -55,7 +55,19 @@
         <div class="column-right">
             <h2>View Data</h2>
             <p>Anda dapat melihat data yang telah disimpan di sini.</p>
-            <a href="{{ route('user.showview', ['userId' => $userId]) }}">View Data</a>
+            <a href="{{ route('information.listdata', ['userId' => $userId]) }}">View Data</a>
+        </div>
+
+        <div class="column-right">
+            <h2>Other Data</h2>
+            <p>Anda dapat melakukan request data orang lain yang telah disimpan di sini.</p>
+            <a href="{{ route('user.showinsertemail', ['userId' => $userId]) }}">View Data</a>
+        </div>
+
+        <div class="column-right">
+            <h2>Request Data</h2>
+            <p>Anda dapat melihat notifikasi request yang diberikan user lain kepada Anda.</p>
+            <a href="{{ route('request.showlist', ['userId' => $userId]) }}">View Data</a>
         </div>
     </section>
 

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RequestController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -17,12 +19,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Register
-Route::get('/', [UserController::class, 'showRegister']);
-Route::post('/', [UserController::class, 'storeRegister'])->name('user.register');
+Route::get('/', [AuthController::class, 'showRegister']);
+Route::post('/', [AuthController::class, 'storeRegister'])->name('user.register');
 
 // Login
-Route::get('/user/login', [UserController::class, 'showLogin'])->name('user.showlogin');
-Route::post('/user/login', [UserController::class, 'login'])->name('user.login');
+Route::get('/user/login', [AuthController::class, 'showLogin'])->name('user.showlogin');
+Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
 
 // Route::group(['middleware' => 'guest'], function(){
 //         // Register
@@ -35,10 +37,32 @@ Route::post('/user/login', [UserController::class, 'login'])->name('user.login')
 // });
 
 Route::middleware(['auth'])->group(function (){
+    // Dashboard
     Route::get('/user/dashboard/{userId}', [UserController::class, 'showDashboard'])->name('user.dashboard');
+    
+    // Form
     Route::get('/user/form/{userId}', [UserController::class, 'showForm'])->name('user.showform');
     Route::post('/user/form/{userId}', [InformationController::class, 'storeInformation'])->name('information.store');
-    Route::get('/user/view/{userId}', [InformationController::class, 'showView'])->name('user.showview');
-    Route::post('/user/view/{userId}', [InformationController::class, 'displayView']);
-    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+    
+    // View
+    Route::get('/user/view/{userId}/{id}', [InformationController::class, 'showView'])->name('user.showview');
+    
+    // List data user OG
+    Route::get('/user/list/{userId}', [InformationController::class, 'listData'])->name('information.listdata');
+    
+    // Insert password
+    Route::post('/user/insertPassword/{userId}', [UserController::class, 'checkPassword'])->name('user.checkpassword');
+    
+    // Insert Email 
+    Route::get('/user/insertEmail/{userId}', [UserController::class, 'showInsertEmail'])->name('user.showinsertemail');
+    Route::post('/user/insertEmail/{userId}', [UserController::class, 'checkEmail'])->name('user.checkemail');
+    
+    // List other data
+    Route::get('/user/otherdata/{userId}/{requestedId}', [InformationController::class, 'listOtherData'])->name('user.listotherdata');
+
+    // Request
+    Route::post('/user/storingRequest/{userId}/{requestedId}/{informationId}', [RequestController::class, 'storingRequest'])->name('request.storingrequest');
+    Route::get('/user/showRequest/{userId}', [RequestController::class, 'showRequestList'])->name('request.showlist');
+
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

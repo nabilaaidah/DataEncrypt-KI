@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('email');
-            $table->string('password');
-            $table->timestamps();
+        Schema::table('requesting', function (Blueprint $table) {
+            $table->uuid('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user');
+        Schema::table('requesting', function (Blueprint $table) {
+            //
+        });
     }
 };

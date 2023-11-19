@@ -22,6 +22,10 @@
         <section class="personal-data">
             <h2>Data Pribadi Anda</h2>
             <div class="data-row">
+                <label for="name">Judul:</label>
+                <p>{{ $latestInfo->title }}</p>
+            </div>
+            <div class="data-row">
                 <label for="name">Nama:</label>
                 <p>{{ $latestInfo->nama }}</p>
             </div>
@@ -166,15 +170,15 @@
         <section class="Encryption Duration">
             <div class="data-row">
                 <label for="RC4-Duration">RC4:</label>
-                <p>{{ $rc4DurInfo }}</p>
+                {{-- <p>{{ $rc4DurInfo }}</p> --}}
             </div>
             <div class="data-row">
                 <label for="AES-Duration">AES 256 CBC:</label>
-                <p>{{ $aesDurInfo }}</p>
+                {{-- <p>{{ $aesDurInfo }}</p> --}}
             </div>
             <div class="data-row">
                 <label for="DES-Duration">DES CBC:</label>
-                <p>{{ $desDurInfo }}</p>
+                {{-- <p>{{ $desDurInfo }}</p> --}}
             </div>
         </section>
 

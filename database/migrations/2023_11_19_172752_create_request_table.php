@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('user', function (Blueprint $table) {
-            $table->string('document')->nullable()->change();
-            $table->string('audio')->nullable()->change();
-            $table->string('video')->nullable()->change();
+        Schema::create('requesting', function (Blueprint $table) {
+            $table->uuid('id')->primary;
+            $table->string('senderEmail');
+            $table->string('receiverEmail');
+            $table->string('status');
+            $table->timestamps();
         });
     }
 
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('requesting');
     }
 };

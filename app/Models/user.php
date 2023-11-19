@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\UUID;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class user extends Model implements Authenticatable
 {
     use HasFactory;
+    use HasUuids;
 
     protected $table = 'user';
     protected $primaryKey = 'id';

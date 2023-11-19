@@ -44,8 +44,8 @@ nav ul li a {
     background-color: #fff;
 }
 
-.edit-info, .column-right {
-    width: 45%;
+.edit-info {
+    width: 60%;
     padding: 20px;
     margin: 10px;
     background-color: #fff;

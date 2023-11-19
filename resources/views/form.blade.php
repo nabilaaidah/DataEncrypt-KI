@@ -23,6 +23,10 @@
             <section class="personal-data">
                 <h2>Isikan Data Pribadi Anda</h2>
                     <div class="form-row">
+                        <label for="title">Judul:</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-row">
                         <label for="name">Nama:</label>
                         <input type="text" id="name" name="name" required>
                     </div>
