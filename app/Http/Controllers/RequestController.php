@@ -25,7 +25,10 @@ class RequestController extends Controller
     }
 
     public function showRequestList($userId){
-        $data = requesting::where('user_id', $userId)->get();
-        return view('listrequestdata', ['information' => $data]);
+        $user = user::where('id', $userId)->first();
+        $data = requesting::where('receiverEmail', $user->email)->get();
+        if($data){
+            return view('listrequestdata', ['information' => $data]);
+        }
     }
 }
