@@ -48,11 +48,16 @@
                         <td class="px-3 text-center">{{ $info->senderEmail}}</td>
                         <td class="px-3 text-center">{{ $info->status}}</td>
                         <td class="text-center py-3">
-                            {{-- <form action="{{ route('send.email') }}" method="POST"> --}}
+                            <form action="{{ route('request.accept', ['requestId' => $info->id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="info_id" value="{{ $info->id }}">
-                                <button type="submit" class="lihat px-2 py-1 dist" role="button">Accept</button>
-                                <button type="submit" class="lihat px-2 py-1 dist" role="button">Decline</button>
+                                <button type="submit" class="lihat px-2 py-1 dist">Accept</button>
+                            </form>
+                            
+                            <form action="{{ route('request.decline', ['requestId' => $info->id]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="info_id" value="{{ $info->id }}">
+                                <button type="submit" class="lihat px-2 py-1 dist">Decline</button>
                             </form>
                         </td>
                     </tr>

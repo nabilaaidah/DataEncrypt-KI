@@ -17,15 +17,13 @@ class Mailer extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+
+    public $loginLink;
+    public function __construct($loginLink)
     {
-        $this->user = $user;
+        $this->loginLink = $loginLink;
     }
 
-    public function build()
-    {
-        return view('requestMail', ['user' => $this->user]);
-    }
 
     /**
      * Get the message envelope.
@@ -43,7 +41,7 @@ class Mailer extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'requestMail',
         );
     }
 

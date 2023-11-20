@@ -1,5 +1,2 @@
-<?php
-echo "Hello " . $user->name . ",\n\n";
-echo "This is a plain text email content.\n\n";
-echo "Regards,\nYour Application\n";
-?>
+<p>Click the following link to log in:</p>
+<a href="{{ $loginLink }}">Login</a>

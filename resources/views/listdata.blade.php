@@ -74,7 +74,7 @@
 
                     <p>Buat password yang akan digunakan untuk melihat data ini.</p>
 
-                    <form>
+                    <form action="" method="">
                         @csrf
                         <div class="form-group">
                             <label for="passdata">Password</label>

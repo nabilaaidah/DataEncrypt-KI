@@ -6,8 +6,10 @@ use App\Models\information;
 use App\Models\requesting;
 use App\Models\user;
 use Illuminate\Http\Request;
-use app\Mail\Mailer;
+use App\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
 
 class RequestController extends Controller
 {
@@ -26,7 +28,7 @@ class RequestController extends Controller
             $data->user_id = $userId;
             $data->save();
 
-            return redirect()->route('user.dashboard', ['userId' => $userId]);
+            $reqId = $data->id;
         }
         catch (\Illuminate\Validation\ValidationException $e){
             dd($e->getMessage());
@@ -49,15 +51,41 @@ class RequestController extends Controller
         }
     }
 
-    public function sendEmail($userId, $requestedId, $informationId){
-        try{
-            $req = user::where('id', $requestedId)->get();
+    public function generateOneTimeToken(){
+        $token = Str::random(40);
+        session(['one_time_login_token' => $token]);
+        return $token;
+    }
 
-            $email = new Mailer($req);
-            Mail::to($req->email)->send($email);
+    public function sendEmail($requestId){
+        try{
+            $req = requesting::where('id', $requestId)->first();
+
+            $signedUrl = URL::temporarySignedRoute(
+                'link.showlogin',
+                now()->addMinutes(60), // Set an expiration time (adjust as needed)
+                ['requestId' => $requestId]
+            );
+
+            $email = new Mailer($signedUrl);
+            Mail::to($req->senderEmail)->send($email);
         }
         catch (\Illuminate\Validation\ValidationException $e){
             dd($e->getMessage());
         }
+    }
+
+    public function storingAccept($requestId){
+        $data = requesting::where('id', $requestId)->first();
+        $data->status = 'Diterima';
+        $data->save();
+
+        return redirect()->route('request.sendemail', ['requestId' => $requestId]);
+    }
+
+    public function storingDecline($requestId){
+        $data = requesting::where('id', $requestId)->first();
+        $data->status = 'Ditolak';
+        $data->save();
     }
 }

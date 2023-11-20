@@ -26,15 +26,9 @@ Route::post('/', [AuthController::class, 'storeRegister'])->name('user.register'
 Route::get('/user/login', [AuthController::class, 'showLogin'])->name('user.showlogin');
 Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
 
-// Route::group(['middleware' => 'guest'], function(){
-//         // Register
-//     Route::get('/', [UserController::class, 'showRegister']);
-//     Route::post('/', [UserController::class, 'storeRegister'])->name('user.register');
-
-//     // Login
-//     Route::get('/user/login', [UserController::class, 'showLogin'])->name('user.showlogin');
-//     Route::post('/user/login', [UserController::class, 'login'])->name('user.login');
-// });
+// Link Login
+Route::get('/login/{requestId}', [AuthController::class, 'showLinkLogin'])->name('link.showlogin');
+Route::post('/login/{requestId}', [AuthController::class, 'linklogin'])->name('link.login');
 
 Route::middleware(['auth'])->group(function (){
     // Dashboard
@@ -63,9 +57,11 @@ Route::middleware(['auth'])->group(function (){
     // Request
     Route::post('/user/storingRequest/{userId}/{requestedId}/{informationId}', [RequestController::class, 'storingRequest'])->name('request.storingrequest');
     Route::get('/user/showRequest/{userId}', [RequestController::class, 'showRequestList'])->name('request.showlist');
+    Route::post('/user/storingAcc/{requestId}', [RequestController::class, 'storingAccept'])->name('request.accept');
+    Route::post('/user/storingDecline/{requestId}', [RequestController::class, 'storingDecline'])->name('request.decline');
 
     // Mail
-    Route::get('/user/sendEmail/{userId}/{requestedId}/{informationId}', [RequestController::class, 'sendEmail'])->name('request.sendemail');
+    Route::get('/user/sendEmail/{requestId}', [RequestController::class, 'sendEmail'])->name('request.sendemail');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
