@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller 
 {
     public function showDashboard($userId){
-        $latestInfo = user::where('id', $userId)->latest()->first();
+        $latestInfo = user::where('id', $userId)->first();
         return view('profile', ['userId' => $userId, 'latestInfo' => $latestInfo]);
     }
 

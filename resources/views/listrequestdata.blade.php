@@ -18,7 +18,7 @@
     </header>
     <nav>
         @php
-            $userId = $information->first()->user_id ?? 'defaultUserId';
+            $userId = $information->first()->user_id;
         @endphp
         <ul>
             <li><a href="{{ route('user.dashboard', ['userId' => $userId]) }}">Dashboard</a></li>

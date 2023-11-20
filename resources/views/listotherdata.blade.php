@@ -45,7 +45,7 @@
                         <td class="px-3 text-center">{{ $info->created_at}}</td>
                         {{-- <td class="px-3 text-center">2023-10-24 15:29</td> --}}
                         <td class="text-center py-3">
-                            <form action="{{ route('request.storingrequest', ['userId' => $userId, 'requestedId' => $requestedId, 'informationId' => $info->id]) }}" method="POST">
+                            <form action="{{ route('request.sendemail', ['userId' => $userId, 'requestedId' => $requestedId, 'informationId' => $info->id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="info_id" value="{{ $info->id }}">
                                 <button type="submit" class="lihat px-2 py-1" role="button">Request</button>

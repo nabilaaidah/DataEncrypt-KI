@@ -64,5 +64,8 @@ Route::middleware(['auth'])->group(function (){
     Route::post('/user/storingRequest/{userId}/{requestedId}/{informationId}', [RequestController::class, 'storingRequest'])->name('request.storingrequest');
     Route::get('/user/showRequest/{userId}', [RequestController::class, 'showRequestList'])->name('request.showlist');
 
+    // Mail
+    Route::get('/user/sendEmail/{userId}/{requestedId}/{informationId}', [RequestController::class, 'sendEmail'])->name('request.sendemail');
+
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
