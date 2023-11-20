@@ -59,4 +59,18 @@ footer {
     padding: 10px;
 }
 
+.filldatabtn {
+    color: #0070E0 !important;
+    text-decoration: underline !important;
+    padding: 0 !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.filldatabtn:active, .filldatabtn:checked, .filldatabtn:hover, .filldatabtn:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 /* Tambahkan CSS tambahan ses

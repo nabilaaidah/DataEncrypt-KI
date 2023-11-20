@@ -36,16 +36,16 @@ nav ul li a {
 }
 
 .lihat {
-    background-color: #333;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    border: 2px solid transparent;
+    background-color: #333 !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 5px !important;
+    border: 2px solid transparent !important;
 }
 
 .lihat:hover {
-    background-color: #999;
-    color: black;
+    background-color: #999 !important;
+    color: black !important;
 }
 
 .dist {
