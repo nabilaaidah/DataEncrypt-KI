@@ -54,7 +54,7 @@
         <div class="column-left">
             <h2>Fill Data</h2>
             <p>Anda dapat mengisikan informasi pribadi di sini.</p>
-            
+
             <button type="button" class="btn filldatabtn" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Fill Data
             </button>
@@ -88,9 +88,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <p>Buat password yang akan digunakan untuk melihat data ini.</p>
-                
+
                     <form>
                         @csrf
                         <div class="form-group">
@@ -101,7 +101,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="lihat px-2 py-1">
-                        <a style="color:black; text-decoration: none" href="{{ route('user.showform', ['userId' => $userId]) }}" >
+                        <a style="color:black; text-decoration: none" href="{{ route('user.showform', ['userId' => $userId]) }}">
                             Submit
                         </a></button>
                 </div>
