@@ -63,7 +63,7 @@ class RequestController extends Controller
 
             $signedUrl = URL::temporarySignedRoute(
                 'link.showlogin',
-                now()->addMinutes(60), // Set an expiration time (adjust as needed)
+                now()->addMinutes(4), // Set an expiration time (adjust as needed)
                 ['requestId' => $requestId]
             );
 

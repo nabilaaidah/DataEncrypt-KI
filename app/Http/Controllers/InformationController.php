@@ -109,4 +109,11 @@ class InformationController extends Controller
         $requestedId = user::where('id', $requestedId)->first();
         return view('listotherdata', ['userId' => $userId, 'information' => $data, 'requestedId' => $requestedId]);
     }
+
+    public function linkShowView($userId, $id){
+        $latestInfo = information::where('id', $id)->first();
+        if($latestInfo){
+            return view('linkvieu', ['id' => $id, 'latestInfo' => $latestInfo, 'userId' => $userId]);
+        }
+    }
 }

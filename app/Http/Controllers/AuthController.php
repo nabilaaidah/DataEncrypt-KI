@@ -20,7 +20,7 @@ class AuthController extends Controller
         return view('login');
     }
 
-    public function showLinkLogin($requestId){
+    public function showLinkLogin(Request $request, $requestId){
         return view('linklogin', ['requestId' => $requestId]);
     }
 
@@ -34,7 +34,8 @@ class AuthController extends Controller
             // if (URL::hasValidSignature($request)) {
                 $data = requesting::where('id', $requestId)->first();
                 if (Auth::attempt($credentials) && $data->senderEmail == $request->email) {
-                    return redirect()->route('user.showview', ['userId' => $data->user_id, 'id' => $data->information_id]);
+                    $request->session()->regenerate();
+                    return redirect()->route('link.showview', ['userId' => $data->user_id, 'id' => $data->information_id]);
                 } else {
                     return redirect()->back()->withErrors(['login_error' => 'Email and password did not match the request!']);
                 }
