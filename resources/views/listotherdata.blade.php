@@ -96,18 +96,18 @@
     </main>
 
     <!-- Modal HTML -->
-    <div id="successModal" class="modal">
+    <!-- <div id="successModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal()">&times;</span>
             <p>Request submitted successfully!</p>
         </div>
-    </div>
+    </div> -->
 
     <footer>
         &copy; 2023
     </footer>
 
-    <script>
+    <!-- <script>
         document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', function(event) {
                 event.preventDefault(); // Prevent the default form submission
@@ -120,6 +120,6 @@
         function closeModal() {
             document.getElementById('successModal').style.display = 'none';
         }
-    </script>
+    </script> -->
 </body>
 </html>

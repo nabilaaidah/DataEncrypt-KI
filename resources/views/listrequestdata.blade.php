@@ -18,7 +18,7 @@
     </header>
     <nav>
         @php
-            $userId = $information->first()->user_id;
+        $userId = $information->first()->user_id;
         @endphp
         <ul>
             <li><a href="{{ route('user.dashboard', ['userId' => $userId]) }}">Dashboard</a></li>
@@ -27,6 +27,7 @@
     <main>
 
         <div class="container-fluid p-5">
+            @if ($information)
             <table class="table table-bordered align-middle">
                 <thead>
                     <tr>
@@ -53,7 +54,7 @@
                                 <input type="hidden" name="info_id" value="{{ $info->id }}">
                                 <button type="submit" class="lihat px-2 py-1 dist">Accept</button>
                             </form>
-                            
+
                             <form action="{{ route('request.decline', ['requestId' => $info->id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="info_id" value="{{ $info->id }}">
@@ -61,10 +62,17 @@
                             </form>
                         </td>
                     </tr>
-                   @endforeach
+                    @endforeach
                 </tbody>
             </table>
+            @else
 
+            <div class="container">
+                <h1>No Requests Available</h1>
+                <p>Currently, there are no requests for your data. Check back later or explore other options.</p>
+                <a href="#" class="button">Go to Dashboard</a>
+            </div>
+            @endif
         </div>
 
     </main>
