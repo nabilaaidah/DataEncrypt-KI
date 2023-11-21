@@ -32,9 +32,11 @@ class UserController extends Controller
         ]);
 
         $user = Auth::user();
+        // dd($user->password);
         try{
-            if(Hash::check($request->input('password'), $user->password)){
+            if(Hash::check($request->password, $user->password)){
                 $password = $request->password;
+                return redirect()->route('user.showform', ['userId' => $user->id]);
             }
             else{
                 return redirect()->back()->withErrors(['wrong_password' => 'Password invalid!']);

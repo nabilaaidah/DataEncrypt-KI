@@ -84,26 +84,29 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Buat password</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Isi password</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
-                    <p>Buat password yang akan digunakan untuk melihat data ini.</p>
+                    <p>Isikan password Anda.</p>
 
-                    <form>
+                    <form method="POST" action="{{ route('user.checkpassword', ['userId' => $userId]) }}">
                         @csrf
                         <div class="form-group">
                             <label for="passdata">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                    
+                        <div class="modal-footer">
+                            <button type="submit" class="lihat px-2 py-1">
+                                <a style="color:black; text-decoration: none" href="">
+                                    Submit
+                                </a>
+                            </button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="lihat px-2 py-1">
-                        <a style="color:black; text-decoration: none" href="{{ route('user.showform', ['userId' => $userId]) }}">
-                            Submit
-                        </a></button>
+                    
                 </div>
             </div>
         </div>

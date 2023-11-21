@@ -35,6 +35,9 @@ Route::post('/login/{requestId}', [AuthController::class, 'linklogin'])->name('l
 Route::middleware(['auth'])->group(function (){
     // Dashboard
     Route::get('/user/dashboard/{userId}', [UserController::class, 'showDashboard'])->name('user.dashboard');
+
+    // Check Password
+    Route::post('/user/checkPassword/{userId}', [UserController::class, 'checkPassword'])->name('user.checkpassword');
     
     // Form
     Route::get('/user/form/{userId}', [UserController::class, 'showForm'])->name('user.showform');

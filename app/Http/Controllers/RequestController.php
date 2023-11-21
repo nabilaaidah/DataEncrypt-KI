@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DeclineNotification;
 use App\Models\information;
 use App\Models\requesting;
 use App\Models\user;
@@ -87,5 +88,8 @@ class RequestController extends Controller
         $data = requesting::where('id', $requestId)->first();
         $data->status = 'Ditolak';
         $data->save();
+
+        $email = new DeclineNotification();
+        Mail::to($data->senderEmail)->send($email);
     }
 }

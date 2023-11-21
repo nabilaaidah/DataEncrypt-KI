@@ -1,0 +1,1 @@
+<h2>Your request is declined!</h2>
