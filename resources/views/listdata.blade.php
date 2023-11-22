@@ -45,8 +45,9 @@
                         <td class="px-3 text-center">{{ $info->created_at}}</td>
                         {{-- <td class="px-3 text-center">2023-10-24 15:29</td> --}}
                         <td class="text-center py-3">
+                            <!-- <a class="lihat px-2 py-1" href="{{ route('user.showview', ['userId' => $info->user_id, 'id' => $info->id]) }}" role="button">Lihat di sini</a> -->
                             <button type="button" class="btn lihat px-2 py-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Fill Data
+                                Lihat data
                             </button>
                         </td>
                     </tr>
@@ -62,37 +63,36 @@
         &copy; 2023
     </footer>
 
-    {{-- <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <!-- Modal -->
+     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Buat password</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Masukkan password</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
-                    <p>Buat password yang akan digunakan untuk melihat data ini.</p>
+                    <p>Masukkan password untuk melihat data ini.</p>
 
-                    <form method="POST" action="{{ route('user.checkpassword', ['userId' => $userId]) }}">
+                    <form>
                         @csrf
                         <div class="form-group">
                             <label for="passdata">Password</label>
-                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                        </div>
-                    
-                        <div class="modal-footer">
-                            <button type="submit" class="lihat px-2 py-1">
-                                <a style="color:black; text-decoration: none" href="">
-                                    Submit
-                                </a>
-                            </button>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                         </div>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="lihat px-2 py-1">
+                        <a style="color:white; text-decoration: none" href="{{ route('user.showview', ['userId' => $info->user_id, 'id' => $info->id]) }}">
+                            Submit
+                        </a></button>
+                </div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
 </body>

@@ -46,7 +46,7 @@ Route::middleware(['auth.session'])->group(function (){
     
     // View
     Route::get('/user/view/{userId}/{id}', [InformationController::class, 'showView'])->name('user.showview');
-    Route::get('/view/{userId}/{id}', [InformationController::class, 'linkShowView'])->name('link.showview');
+    Route::get('/view/{userId}/{id}/', [InformationController::class, 'linkShowView'])->name('link.showview');
     
     // List data user OG
     Route::get('/user/list/{userId}', [InformationController::class, 'listData'])->name('information.listdata');

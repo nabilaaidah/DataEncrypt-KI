@@ -11,6 +11,9 @@ use App\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
+use App\Http\Services\AsymService;
+use App\Models\RequestedInformation;
+use phpseclib\Crypt\RSA;
 
 class RequestController extends Controller
 {
@@ -38,7 +41,7 @@ class RequestController extends Controller
         }
     }
 
-    public function showRequestList($userId){
+    public function showRequestList(?string $userId){
         try{
             $user = user::where('id', $userId)->first();
             $data = requesting::where('receiverEmail', $user->email)->get();
@@ -84,10 +87,23 @@ class RequestController extends Controller
     public function storingAccept($requestId){
         $data = requesting::where('id', $requestId)->first();
         $data->status = 'Diterima';
+        $user_id = information::where('id', $data->information_id)->first()->user_id;
+        $user = user::where('id', $user_id)->first();
+        $reqInfo = new RequestedInformation();
+        $publicKey = $user->pubkey;
+        $rsa = new RSA();
+        $rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
+        $rsa->loadKey($publicKey);
+        $enckey = base64_encode($rsa->encrypt($user->symkey));
+        $reqInfo->ri_id = Str::uuid();
+        $reqInfo->enckey = $enckey;
+        $reqInfo->request_id = $requestId;
+        $reqInfo->save();
         $data->save();
 
         return redirect()->route('request.sendemail', ['requestId' => $requestId]);
     }
+    
 
     public function storingDecline($requestId){
         $data = requesting::where('id', $requestId)->first();
