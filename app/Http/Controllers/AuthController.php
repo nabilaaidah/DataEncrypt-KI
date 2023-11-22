@@ -8,6 +8,8 @@ use App\Models\user;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use phpseclib\Crypt\RSA;
+use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
@@ -35,6 +37,7 @@ class AuthController extends Controller
                 $data = requesting::where('id', $requestId)->first();
                 if (Auth::attempt($credentials) && $data->senderEmail == $request->email) {
                     $request->session()->regenerate();
+                    // dd($requestId);
                     return redirect()->route('link.showview', ['userId' => $data->user_id, 'id' => $data->information_id]);
                 } else {
                     return redirect()->back()->withErrors(['login_error' => 'Email and password did not match the request!']);
@@ -54,6 +57,11 @@ class AuthController extends Controller
             'email' => ['required', 'email', 'regex:/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/', 'unique:user,email'],
             'password' => ['required'],
         ]);
+        $rsa = new RSA();
+        $keyPair = $rsa->createKey();
+        $publicKey = $keyPair['publickey'];
+        $privateKey = $keyPair['privatekey'];
+        $symmetricKey = Str::random(64);
         try{
             $existingUser = user::where('email', $request['email'])->first();
             if ($existingUser) {
@@ -62,8 +70,11 @@ class AuthController extends Controller
             }
 
             $userData = new user();
+            $userData->pubkey = $publicKey;
+            $userData->privkey = $privateKey;
             $userData->name = $request->fullname;
             $userData->email = $request->email;
+            $userData->symkey = $symmetricKey;
             $userData->password = Hash::make($request->password);
             $userData->save();
 

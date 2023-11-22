@@ -17,13 +17,21 @@
         <h1>Dashboard</h1>
     </header>
     <nav>
-        @php
-            $userId = $information->first()->user_id;
-        @endphp
-        <ul>
-            <li><a href="{{ route('user.dashboard', ['userId' => $userId]) }}">Dashboard</a></li>
-        </ul>
+        @if ($information == null)
+        <main>
+            <div class="text-center">
+                <h1>There's no request</h1>
+            </div>
+        </main>
     </nav>
+        @else
+            @php
+                $userId = $information->first()->user_id;
+            @endphp
+            <ul>
+                <li><a href="{{ route('user.dashboard', ['userId' => $userId]) }}">Dashboard</a></li>
+            </ul>
+            </nav>
     <main>
 
         <div class="container-fluid p-5">
@@ -64,10 +72,9 @@
                    @endforeach
                 </tbody>
             </table>
-
         </div>
-
-    </main>
+        </main>
+        @endif
 
     <footer>
         &copy; 2023

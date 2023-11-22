@@ -5,13 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\information;
 use App\Models\user;
 use Illuminate\Http\Request;
-use App\Services\RC4EncryptionService;
-use App\Services\RC4DecryptionService;
-use App\Services\AESEncryptionService;
-use App\Services\AESDecryptionService;
-use App\Services\DESEncryptionService;
-use App\Services\DESDecryptionService;
-
+use App\Models\requesting;
+use phpseclib\Crypt\AES;
+use phpseclib\Crypt\RSA;
+use App\Models\RequestedInformation;
 class InformationController extends Controller
 {
     function storeInformation(Request $request){
@@ -27,48 +24,38 @@ class InformationController extends Controller
             ]);
 
             $userId = $request->route('userId');
-
+            $symkey = user::where('id', $userId)->value('symkey');
+            $aes = new AES();
+            $aes->setKey($symkey);
             $data = new information();
             $data->title = $request->title;
             $data->nama = $request->name;
-            $data->NIK = $request->nik;
-            $data->dob = $request->dob;
-            $data->gender = $request->gender;
-            $data->email = $request->email;
-            $data->phone = $request->phone;
-            $data->address = $request->address;
-            $data->geneticDisease = $request->geneticDisease;
-            $data->allergies = $request->allergies;
-            $data->medications = $request->medications;
-            $data->bloodPressure = $request->bloodPressure;
-            $data->cholesterol = $request->cholesterol;
-            $data->medicalHistory = $request->medicalHistory;
-            $data->ethicity = $request->ethnicity;
-            $data->sexualOrientation = $request->sexualOrientation;
-            $data->religion = $request->religion;
-            $data->languages = $request->languages;
-            $data->nationality = $request->nationality;
-            $data->politicalAffiliation = $request->politicalAffiliation;
-            $data->biometricVideo = $request->file('biometricVideo')->store('public/video');
-            $data->biometricData = $request->biometricData;
-            $data->eyeColor = $request->eyeColor;
-            $data->hairColor = $request->hairColor;
-            $data->kkDocument = $request->file('kkDocument')->store('public/doc');
-            $data->photo1 = $request->file('photo1')->store('public/photo');
+            $data->NIK = base64_encode($aes->encrypt($request->nik));
+            $data->dob = base64_encode($aes->encrypt($request->dob));
+            $data->gender = base64_encode($aes->encrypt($request->gender));
+            $data->email = base64_encode($aes->encrypt($request->email));
+            $data->phone = base64_encode($aes->encrypt($request->phone));
+            $data->address = base64_encode($aes->encrypt($request->address));
+            $data->geneticDisease = base64_encode($aes->encrypt($request->geneticDisease));
+            $data->allergies = base64_encode($aes->encrypt($request->allergies));
+            $data->medications = base64_encode($aes->encrypt($request->medications));
+            $data->bloodPressure = base64_encode($aes->encrypt($request->bloodPressure));
+            $data->cholesterol = base64_encode($aes->encrypt($request->cholesterol));
+            $data->medicalHistory = base64_encode($aes->encrypt($request->medicalHistory));
+            $data->ethicity = base64_encode($aes->encrypt($request->ethnicity));
+            $data->sexualOrientation = base64_encode($aes->encrypt($request->sexualOrientation));
+            $data->religion = base64_encode($aes->encrypt($request->religion));
+            $data->languages = base64_encode($aes->encrypt($request->input('languages')));
+            $data->nationality = base64_encode($aes->encrypt($request->nationality));
+            $data->politicalAffiliation = base64_encode($aes->encrypt($request->politicalAffiliation));
+            $data->biometricVideo = base64_encode($aes->encrypt($request->file('biometricVideo')->store('public/video')));
+            $data->biometricData = base64_encode($aes->encrypt($request->biometricData));
+            $data->eyeColor = base64_encode($aes->encrypt($request->eyeColor));
+            $data->hairColor = base64_encode($aes->encrypt($request->hairColor));
+            $data->kkDocument = base64_encode($aes->encrypt($request->file('kkDocument')->store('public/doc')));
+            $data->photo1 = base64_encode($aes->encrypt($request->file('photo1')->store('public/photo')));
             $data->user_id = $userId;
             $data->save();
-            
-            // $encryptRc4 = new RC4EncryptionService();
-            // $rc4Data = $encryptRc4->rc4Encryption($data);
-            // $rc4Data->save();
-
-            // $encryptAes = new AESEncryptionService();
-            // $aesData = $encryptAes->aesEncryption($data);
-            // $aesData->save();
-
-            // $encryptDes = new DESEncryptionService();
-            // $desData = $encryptDes->desEncryption($data);
-            // $desData->save();
             return redirect()->route('user.dashboard', ['userId' => $userId]);
         }
         catch (\Illuminate\Validation\ValidationException $e){
@@ -82,38 +69,88 @@ class InformationController extends Controller
     }
 
     public function showView($userId, $id){
-        // $decryptRc4 = new RC4DecryptionService();
-        // $latestInfo = information::where('user_id', $userId)->where('crypt', 'RC4')->latest()->first();
-        // dd($id);
         $latestInfo = information::where('id', $id)->first();
-
-        // $rc4DurInfo = $latestInfo->duration;
-        // $aesDurInfo = information::where('user_id', $userId)->where('crypt', 'AES_256_CBC')
-        //     ->latest()
-        //     ->value('duration');
-        // $desDurInfo = information::where('user_id', $userId)->where('crypt', 'DES_CBC')
-        //     ->latest()
-        //     ->value('duration');
-        // $latestInfo = $decryptRc4->rc4Decryption($latestInfo);
+        $userId = $latestInfo->user_id;
+        $symkey = user::where('id', $userId)->value('symkey');
+        $aes = new AES();
+        $aes->setKey($symkey);
+        $latestInfo->NIK = $aes->decrypt(base64_decode($latestInfo->NIK));
+        $latestInfo->dob = $aes->decrypt(base64_decode($latestInfo->dob));
+        $latestInfo->gender = $aes->decrypt(base64_decode($latestInfo->gender));
+        $latestInfo->email = $aes->decrypt(base64_decode($latestInfo->email));
+        $latestInfo->phone = $aes->decrypt(base64_decode($latestInfo->phone));
+        $latestInfo->address = $aes->decrypt(base64_decode($latestInfo->address));
+        $latestInfo->geneticDisease = $aes->decrypt(base64_decode($latestInfo->geneticDisease));
+        $latestInfo->allergies = $aes->decrypt(base64_decode($latestInfo->allergies));
+        $latestInfo->medications = $aes->decrypt(base64_decode($latestInfo->medications));
+        $latestInfo->bloodPressure = $aes->decrypt(base64_decode($latestInfo->bloodPressure));
+        $latestInfo->cholesterol = $aes->decrypt(base64_decode($latestInfo->cholesterol));
+        $latestInfo->medicalHistory = $aes->decrypt(base64_decode($latestInfo->medicalHistory));
+        $latestInfo->ethicity = $aes->decrypt(base64_decode($latestInfo->ethicity));
+        $latestInfo->sexualOrientation = $aes->decrypt(base64_decode($latestInfo->sexualOrientation));
+        $latestInfo->religion = $aes->decrypt(base64_decode($latestInfo->religion));
+        $latestInfo->languages = $aes->decrypt(base64_decode($latestInfo->languages));
+        $latestInfo->nationality = $aes->decrypt(base64_decode($latestInfo->nationality));
+        $latestInfo->politicalAffiliation = $aes->decrypt(base64_decode($latestInfo->politicalAffiliation));
+        $latestInfo->eyeColor = $aes->decrypt(base64_decode($latestInfo->eyeColor));
+        $latestInfo->hairColor = $aes->decrypt(base64_decode($latestInfo->hairColor));
+        $latestInfo->photo1 = $aes->decrypt(base64_decode($latestInfo->photo1));
+        $latestInfo->biometricVideo = $aes->decrypt(base64_decode($latestInfo->biometricVideo));
+        $latestInfo->kkDocument = $aes->decrypt(base64_decode($latestInfo->kkDocument));
 
         if($latestInfo){
-            // dd($latestInfo->nama);
-            // return view('vieu', ['userId' => $userId, 'latestInfo' => $latestInfo, 'aesDurInfo' => $aesDurInfo, 'desDurInfo' => $desDurInfo, 'rc4DurInfo' => $rc4DurInfo]);
             return view('vieu', ['id' => $id, 'latestInfo' => $latestInfo, 'userId' => $userId]);
         }
     }
 
     public function listOtherData($userId, $requestedId){
-        // dd($requestedId);
+
         $data = information::where('user_id', $requestedId)->get();
         $requestedId = user::where('id', $requestedId)->first();
+
         return view('listotherdata', ['userId' => $userId, 'information' => $data, 'requestedId' => $requestedId]);
     }
 
     public function linkShowView($userId, $id){
-        $latestInfo = information::where('id', $id)->first();
+        // dd($id, $reqId);
+        $request = requesting::where('information_id', $id)->where('user_id',$userId)->first();
+        $request_information = RequestedInformation::where('request_id',$request->id)->first();
+        $latestInfo = information::where('id', $request->information_id)->first();
+        $privkey = user::where('id','!=', $request->user_id)->first()->privkey;
+        $rsa = new RSA();
+        $rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
+        $aes = new AES();
+        $rsa->loadKey($privkey);
+        $enckey = base64_decode($request_information->enckey);
+        $symkey = $rsa->decrypt($enckey);
+        $aes->setKey($symkey);
+        //dd($symkey,$usersym);
+        //
+        $latestInfo->NIK = $aes->decrypt(base64_decode($latestInfo->NIK));
+        $latestInfo->dob = $aes->decrypt(base64_decode($latestInfo->dob));
+        $latestInfo->gender = $aes->decrypt(base64_decode($latestInfo->gender));
+        $latestInfo->email = $aes->decrypt(base64_decode($latestInfo->email));
+        $latestInfo->phone = $aes->decrypt(base64_decode($latestInfo->phone));
+        $latestInfo->address = $aes->decrypt(base64_decode($latestInfo->address));
+        $latestInfo->geneticDisease = $aes->decrypt(base64_decode($latestInfo->geneticDisease));
+        $latestInfo->allergies = $aes->decrypt(base64_decode($latestInfo->allergies));
+        $latestInfo->medications = $aes->decrypt(base64_decode($latestInfo->medications));
+        $latestInfo->bloodPressure = $aes->decrypt(base64_decode($latestInfo->bloodPressure));
+        $latestInfo->cholesterol = $aes->decrypt(base64_decode($latestInfo->cholesterol));
+        $latestInfo->medicalHistory = $aes->decrypt(base64_decode($latestInfo->medicalHistory));
+        $latestInfo->ethicity = $aes->decrypt(base64_decode($latestInfo->ethicity));
+        $latestInfo->sexualOrientation = $aes->decrypt(base64_decode($latestInfo->sexualOrientation));
+        $latestInfo->religion = $aes->decrypt(base64_decode($latestInfo->religion));
+        $latestInfo->languages = $aes->decrypt(base64_decode($latestInfo->languages));
+        $latestInfo->nationality = $aes->decrypt(base64_decode($latestInfo->nationality));
+        $latestInfo->politicalAffiliation = $aes->decrypt(base64_decode($latestInfo->politicalAffiliation));
+        $latestInfo->eyeColor = $aes->decrypt(base64_decode($latestInfo->eyeColor));
+        $latestInfo->hairColor = $aes->decrypt(base64_decode($latestInfo->hairColor));
+        $latestInfo->photo1 = $aes->decrypt(base64_decode($latestInfo->photo1));
+        $latestInfo->biometricVideo = $aes->decrypt(base64_decode($latestInfo->biometricVideo));
+        $latestInfo->kkDocument = $aes->decrypt(base64_decode($latestInfo->kkDocument));
         if($latestInfo){
-            return view('linkvieu', ['id' => $id, 'latestInfo' => $latestInfo, 'userId' => $userId]);
+            return view('linkvieu', ['id' => $request->information_id, 'latestInfo' => $latestInfo, 'userId' => $userId]);
         }
     }
 }
