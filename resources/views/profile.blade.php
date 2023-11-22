@@ -63,19 +63,21 @@
         <div class="column-right">
             <h2>View Data</h2>
             <p>Anda dapat melihat data yang telah disimpan di sini.</p>
-            <a href="{{ route('information.listdata', ['userId' => $userId]) }}">View Data</a>
+            <button type="button" class="btn filldatabtn" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                View Data
+            </button>
         </div>
 
         <div class="column-right">
             <h2>Other Data</h2>
             <p>Anda dapat melakukan request data orang lain yang telah disimpan di sini.</p>
-            <a href="{{ route('user.showinsertemail', ['userId' => $userId]) }}">View Data</a>
+            <a href="{{ route('user.showinsertemail', ['userId' => $userId]) }}">Other Data</a>
         </div>
 
         <div class="column-right">
             <h2>Request Data</h2>
             <p>Anda dapat melihat notifikasi request yang diberikan user lain kepada Anda.</p>
-            <a href="{{ route('request.showlist', ['userId' => $userId]) }}">View Data</a>
+            <a href="{{ route('request.showlist', ['userId' => $userId]) }}">Request Data</a>
         </div>
     </section>
 
@@ -92,6 +94,38 @@
                     <p>Isikan password Anda.</p>
 
                     <form method="POST" action="{{ route('user.checkpassword', ['userId' => $userId]) }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="passdata">Password</label>
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                    
+                        <div class="modal-footer">
+                            <button type="submit" class="lihat px-2 py-1">
+                                <a style="color:black; text-decoration: none" href="">
+                                    Submit
+                                </a>
+                            </button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Isi password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <p>Isikan password Anda.</p>
+
+                    <form method="POST" action="{{ route('user.checkpasswordview', ['userId' => $userId]) }}">
                         @csrf
                         <div class="form-group">
                             <label for="passdata">Password</label>

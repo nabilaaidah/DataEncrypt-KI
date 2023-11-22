@@ -51,14 +51,47 @@
                             <form action="{{ route('request.accept', ['requestId' => $info->id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="info_id" value="{{ $info->id }}">
-                                <button type="submit" class="lihat px-2 py-1 dist">Accept</button>
+                                <button data-status="{{ $info->status }}" type="submit" class="lihat px-2 py-1 dist">Accept</button>
                             </form>
-                            
+
                             <form action="{{ route('request.decline', ['requestId' => $info->id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="info_id" value="{{ $info->id }}">
-                                <button type="submit" class="lihat px-2 py-1 dist">Decline</button>
+                                <button data-status="{{ $info->status }}" type="submit" class="lihat px-2 py-1 dist">Decline</button>
                             </form>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    var acceptButtons = document.querySelectorAll('[data-status="Diterima"]');
+                                    var declineButtons = document.querySelectorAll('[data-status="Ditolak"]');
+
+                                    acceptButtons.forEach(function (acceptButton) {
+                                        var infoId = acceptButton.form.elements['info_id'].value;
+                                        var acceptButtonStatus = localStorage.getItem('acceptButtonStatus_' + infoId);
+                                        if (acceptButtonStatus === 'disabled') {
+                                            acceptButton.disabled = true;
+                                        }
+
+                                        acceptButton.addEventListener('click', function () {
+                                            acceptButton.disabled = true;
+                                            localStorage.setItem('acceptButtonStatus_' + infoId, 'disabled');
+                                        });
+                                    });
+
+                                    declineButtons.forEach(function (declineButton) {
+                                        var infoId = declineButton.form.elements['info_id'].value;
+                                        var declineButtonStatus = localStorage.getItem('declineButtonStatus_' + infoId);
+                                        if (declineButtonStatus === 'disabled') {
+                                            declineButton.disabled = true;
+                                        }
+
+                                        declineButton.addEventListener('click', function () {
+                                            declineButton.disabled = true;
+                                            localStorage.setItem('declineButtonStatus_' + infoId, 'disabled');
+                                        });
+                                    });
+                                });
+                            </script>
                         </td>
                     </tr>
                    @endforeach
@@ -74,5 +107,12 @@
     </footer>
 
 </body>
+
+<style>
+    button:disabled {
+            pointer-events: none;
+            background-color: #999;
+        }
+</style>
 
 </html>

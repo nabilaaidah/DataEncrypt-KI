@@ -30,6 +30,8 @@ class RequestController extends Controller
             $data->save();
 
             $reqId = $data->id;
+
+            return view('requestsentpage', ['userId' => $userId]);
         }
         catch (\Illuminate\Validation\ValidationException $e){
             dd($e->getMessage());
@@ -44,7 +46,7 @@ class RequestController extends Controller
                 return view('listrequestdata', ['information' => $data]);
             }
             else{
-                return view();
+                return view('norequest', ['userId' => $userId]);
             }
         }
         catch (\Illuminate\Validation\ValidationException $e){
@@ -61,6 +63,7 @@ class RequestController extends Controller
     public function sendEmail($requestId){
         try{
             $req = requesting::where('id', $requestId)->first();
+            $user = user::where('email', $req->receiverEmail)->first();
 
             $signedUrl = URL::temporarySignedRoute(
                 'link.showlogin',
@@ -68,8 +71,10 @@ class RequestController extends Controller
                 ['requestId' => $requestId]
             );
 
-            $email = new Mailer($signedUrl);
+            $email = new Mailer($signedUrl, $req);
             Mail::to($req->senderEmail)->send($email);
+
+            return view('acceptpage', ['userId' => $user->id]);
         }
         catch (\Illuminate\Validation\ValidationException $e){
             dd($e->getMessage());
@@ -88,8 +93,10 @@ class RequestController extends Controller
         $data = requesting::where('id', $requestId)->first();
         $data->status = 'Ditolak';
         $data->save();
+        $user = user::where('email', $data->receiverEmail)->first();
 
-        $email = new DeclineNotification();
+        $email = new DeclineNotification($data);
         Mail::to($data->senderEmail)->send($email);
+        return view('declinepage', ['userId' => $user->id]);
     }
 }

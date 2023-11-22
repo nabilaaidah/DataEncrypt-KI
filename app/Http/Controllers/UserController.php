@@ -47,6 +47,27 @@ class UserController extends Controller
         }
     }
 
+    public function checkPasswordView(Request $request){
+        $credentials = $request->validate([
+            'password' => 'required',
+        ]);
+
+        $user = Auth::user();
+        // dd($user->password);
+        try{
+            if(Hash::check($request->password, $user->password)){
+                $password = $request->password;
+                return redirect()->route('information.listdata', ['userId' => $user->id]);
+            }
+            else{
+                return redirect()->back()->withErrors(['wrong_password' => 'Password invalid!']);
+            }
+        }
+        catch (\Illuminate\Validation\ValidationException $e){
+            dd($e->getMessage());
+        }
+    }
+
     public function showInsertEmail($userId){
         return view('insertEmail', ['userId' => $userId]);
     }

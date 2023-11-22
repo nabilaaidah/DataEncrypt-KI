@@ -19,9 +19,11 @@ class Mailer extends Mailable
      */
 
     public $loginLink;
-    public function __construct($loginLink)
+    public $request;
+    public function __construct($loginLink, $request)
     {
         $this->loginLink = $loginLink;
+        $this->request = $request;
     }
 
 
@@ -31,7 +33,7 @@ class Mailer extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Mailer',
+            subject: 'Your request has been granted!',
         );
     }
 

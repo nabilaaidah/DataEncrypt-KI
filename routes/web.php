@@ -32,12 +32,13 @@ Route::middleware(['signed', 'auth'])->group(function (){
 }); 
 Route::post('/login/{requestId}', [AuthController::class, 'linklogin'])->name('link.login');
 
-Route::middleware(['auth'])->group(function (){
+Route::middleware(['auth.session'])->group(function (){
     // Dashboard
     Route::get('/user/dashboard/{userId}', [UserController::class, 'showDashboard'])->name('user.dashboard');
 
     // Check Password
     Route::post('/user/checkPassword/{userId}', [UserController::class, 'checkPassword'])->name('user.checkpassword');
+    Route::post('/user/checkPasswordView/{userId}', [UserController::class, 'checkPasswordView'])->name('user.checkpasswordview');
     
     // Form
     Route::get('/user/form/{userId}', [UserController::class, 'showForm'])->name('user.showform');

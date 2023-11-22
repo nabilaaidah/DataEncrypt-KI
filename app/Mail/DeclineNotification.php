@@ -16,9 +16,10 @@ class DeclineNotification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public $request;
+    public function __construct($request)
     {
-        //
+        $this->request = $request;
     }
 
     /**
@@ -27,7 +28,7 @@ class DeclineNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Decline Notification',
+            subject: 'Your request has been declined!',
         );
     }
 
