@@ -44,8 +44,8 @@ nav ul li a {
     background-color: #fff;
 }
 
-.edit-info, .column-right {
-    width: 45%;
+.edit-info {
+    width: 60%;
     padding: 20px;
     margin: 10px;
     background-color: #fff;
@@ -57,6 +57,20 @@ footer {
     background-color: #333;
     color: #fff;
     padding: 10px;
+}
+
+.filldatabtn {
+    color: #0070E0 !important;
+    text-decoration: underline !important;
+    padding: 0 !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.filldatabtn:active, .filldatabtn:checked, .filldatabtn:hover, .filldatabtn:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 /* Tambahkan CSS tambahan ses

@@ -10,11 +10,11 @@
 </head>
 <body>
     <header>
-        <h1>Dashboard</h1>
+        <h1>Other Data</h1>
     </header>
     <nav>
         <ul>
-            <li><a href="{{ route('user.dashboard', ['userId' => $userId]) }}">Dashboard</a></li>
+            <li><a href="{{ route('logout') }}">Logout</a></li>
         </ul>
     </nav>
     <main>

@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\UUID;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class user extends Model implements Authenticatable
 {
     use HasFactory;
+    use HasUuids;
 
     protected $table = 'user';
     protected $primaryKey = 'id';
@@ -18,7 +21,10 @@ class user extends Model implements Authenticatable
                             'password',
                             'audio',
                             'document',
-                            'video'
+                            'video',
+                            'privkey',
+                            'pubkey',
+                            'symkey'
     ];
 
     public function getAuthIdentifierName()
@@ -46,6 +52,19 @@ class user extends Model implements Authenticatable
         return $this->password;
     }
 
+    public function getPrivateKey()
+    {
+        return $this->privKey;
+    }
+
+    public function getPublicKey()
+    {
+        return $this->pubKey;
+    }
+    public function getSymKey()
+    {
+        return $this->symkey;
+    }
     /**
      * Get the token value for the "remember me" session.
      *

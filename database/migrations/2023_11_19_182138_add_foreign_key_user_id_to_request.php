@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('information', function (Blueprint $table) {
+        Schema::table('requesting', function (Blueprint $table) {
             $table->uuid('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('information', function (Blueprint $table) {
+        Schema::table('requesting', function (Blueprint $table) {
             //
         });
     }

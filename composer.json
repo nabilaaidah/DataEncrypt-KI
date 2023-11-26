@@ -11,6 +11,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
+        "phpseclib/phpseclib": "^2.0",
+        "ramsey/uuid": "^4.7",
         "wdalmut/rc4-support": "^0.0.1"
     },
     "require-dev": {
