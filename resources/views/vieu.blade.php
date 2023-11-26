@@ -167,21 +167,6 @@
                 @endif
             </div>
         </section>
-        <section class="Encryption Duration">
-            <div class="data-row">
-                <label for="RC4-Duration">RC4:</label>
-                {{-- <p>{{ $rc4DurInfo }}</p> --}}
-            </div>
-            <div class="data-row">
-                <label for="AES-Duration">AES 256 CBC:</label>
-                {{-- <p>{{ $aesDurInfo }}</p> --}}
-            </div>
-            <div class="data-row">
-                <label for="DES-Duration">DES CBC:</label>
-                {{-- <p>{{ $desDurInfo }}</p> --}}
-            </div>
-        </section>
-
         @else
             <p> No data showed </p>
         @endif

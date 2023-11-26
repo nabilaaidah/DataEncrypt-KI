@@ -27,12 +27,12 @@ Route::get('/user/login', [AuthController::class, 'showLogin'])->name('user.show
 Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
 
 // Link Login
-Route::middleware(['signed', 'auth'])->group(function (){
+Route::middleware(['signed'])->group(function (){
     Route::get('/login/{requestId}', [AuthController::class, 'showLinkLogin'])->name('link.showlogin');
 }); 
 Route::post('/login/{requestId}', [AuthController::class, 'linklogin'])->name('link.login');
 
-Route::middleware(['auth.session'])->group(function (){
+Route::middleware(['auth'])->group(function (){
     // Dashboard
     Route::get('/user/dashboard/{userId}', [UserController::class, 'showDashboard'])->name('user.dashboard');
 

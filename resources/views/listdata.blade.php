@@ -45,10 +45,10 @@
                         <td class="px-3 text-center">{{ $info->created_at}}</td>
                         {{-- <td class="px-3 text-center">2023-10-24 15:29</td> --}}
                         <td class="text-center py-3">
-                            <!-- <a class="lihat px-2 py-1" href="{{ route('user.showview', ['userId' => $info->user_id, 'id' => $info->id]) }}" role="button">Lihat di sini</a> -->
-                            <button type="button" class="btn lihat px-2 py-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <a class="lihat px-2 py-1" href="{{ route('user.showview', ['userId' => $info->user_id, 'id' => $info->id]) }}" role="button">Lihat di sini</a>
+                            {{-- <button type="button" class="btn lihat px-2 py-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Lihat data
-                            </button>
+                            </button> --}}
                         </td>
                     </tr>
                     @endforeach
@@ -63,7 +63,7 @@
         &copy; 2023
     </footer>
 
-     <!-- Modal -->
+     {{-- <!-- Modal -->
      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -92,7 +92,7 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> --}}
 
 
 </body>

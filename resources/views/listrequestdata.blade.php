@@ -26,14 +26,6 @@
             <li><a href="{{ route('user.dashboard', ['userId' => $userId]) }}">Dashboard</a></li>
         </ul>
     </nav>
-        @else
-            @php
-                $userId = $information->first()->user_id;
-            @endphp
-            <ul>
-                <li><a href="{{ route('user.dashboard', ['userId' => $userId]) }}">Dashboard</a></li>
-            </ul>
-            </nav>
     <main>
 
         <div class="container-fluid p-5">
