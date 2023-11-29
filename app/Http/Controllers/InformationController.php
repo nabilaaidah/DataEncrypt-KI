@@ -9,6 +9,7 @@ use App\Models\requesting;
 use phpseclib\Crypt\AES;
 use phpseclib\Crypt\RSA;
 use App\Models\RequestedInformation;
+use Illuminate\Support\Str;
 class InformationController extends Controller
 {
     function storeInformation(Request $request){
@@ -24,10 +25,11 @@ class InformationController extends Controller
             ]);
 
             $userId = $request->route('userId');
-            $symkey = user::where('id', $userId)->value('symkey');
             $aes = new AES();
+            $symkey = Str::random(64);
             $aes->setKey($symkey);
             $data = new information();
+            $data->symkey = $symkey;
             $data->title = $request->title;
             $data->nama = $request->name;
             $data->NIK = base64_encode($aes->encrypt($request->nik));
@@ -71,7 +73,7 @@ class InformationController extends Controller
     public function showView($userId, $id){
         $latestInfo = information::where('id', $id)->first();
         $userId = $latestInfo->user_id;
-        $symkey = user::where('id', $userId)->value('symkey');
+        $symkey = $latestInfo->symkey;
         $aes = new AES();
         $aes->setKey($symkey);
         $latestInfo->NIK = $aes->decrypt(base64_decode($latestInfo->NIK));
@@ -111,17 +113,19 @@ class InformationController extends Controller
         return view('listotherdata', ['userId' => $userId, 'information' => $data, 'requestedId' => $requestedId]);
     }
 
-    public function linkShowView($userId, $id){
-        // dd($id, $reqId);
-        $request = requesting::where('information_id', $id)->where('user_id',$userId)->first();
+    public function linkShowView($userId, $informationid){
+        //dd($informationid);
+        $request = requesting::where('information_id', $informationid)->where('user_id',$userId)->first();
         $request_information = RequestedInformation::where('request_id',$request->id)->first();
-        $latestInfo = information::where('id', $request->information_id)->first();
-        $privkey = user::where('id','!=', $request->user_id)->first()->privkey;
+        $latestInfo = information::where('id', $informationid)->first();
+        $userAskedId = $latestInfo->user_id;
+        $privkey = user::where('id', $userAskedId)->first()->privkey;
+        //dd($privkey);
         $rsa = new RSA();
         $rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
         $aes = new AES();
         $rsa->loadKey($privkey);
-        $enckey = base64_decode($request_information->enckey);
+        $enckey = base64_decode($request_information->enc_symkey);
         $symkey = $rsa->decrypt($enckey);
         $aes->setKey($symkey);
         //dd($symkey,$usersym);

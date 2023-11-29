@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('request_information', function (Blueprint $table) {
             $table->uuid('ri_id');
-            $table->text('enckey');
+            $table->text('enc_symkey');
             $table->uuid('request_id');
             $table->timestamps();
         });

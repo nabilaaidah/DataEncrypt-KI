@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('password');
             $table->text('privkey');
             $table->text('pubkey');
-            $table->text('symkey');
             $table->timestamps();
         });
     }

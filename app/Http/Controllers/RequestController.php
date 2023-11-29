@@ -88,15 +88,16 @@ class RequestController extends Controller
         $data = requesting::where('id', $requestId)->first();
         $data->status = 'Diterima';
         $user_id = information::where('id', $data->information_id)->first()->user_id;
+        $symkey = information::where('id', $data->information_id)->first()->symkey;
         $user = user::where('id', $user_id)->first();
         $reqInfo = new RequestedInformation();
         $publicKey = $user->pubkey;
         $rsa = new RSA();
         $rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
         $rsa->loadKey($publicKey);
-        $enckey = base64_encode($rsa->encrypt($user->symkey));
+        $enckey = base64_encode($rsa->encrypt($symkey));
         $reqInfo->ri_id = Str::uuid();
-        $reqInfo->enckey = $enckey;
+        $reqInfo->enc_symkey = $enckey;
         $reqInfo->request_id = $requestId;
         $reqInfo->save();
         $data->save();

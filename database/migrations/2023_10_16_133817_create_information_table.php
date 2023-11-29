@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('information', function (Blueprint $table) {
             $table->id();
+            $table->string('symkey');
             $table->string('nama');
             $table->string('NIK');
             $table->string('dob');

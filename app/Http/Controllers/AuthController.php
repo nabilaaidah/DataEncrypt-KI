@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use phpseclib\Crypt\RSA;
-use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
@@ -61,7 +60,6 @@ class AuthController extends Controller
         $keyPair = $rsa->createKey();
         $publicKey = $keyPair['publickey'];
         $privateKey = $keyPair['privatekey'];
-        $symmetricKey = Str::random(64);
         try{
             $existingUser = user::where('email', $request['email'])->first();
             if ($existingUser) {
@@ -74,7 +72,6 @@ class AuthController extends Controller
             $userData->privkey = $privateKey;
             $userData->name = $request->fullname;
             $userData->email = $request->email;
-            $userData->symkey = $symmetricKey;
             $userData->password = Hash::make($request->password);
             $userData->save();
 
