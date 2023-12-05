@@ -79,6 +79,13 @@
             <p>Anda dapat melihat notifikasi request yang diberikan user lain kepada Anda.</p>
             <a href="{{ route('request.showlist', ['userId' => $userId]) }}">Request Data</a>
         </div>
+
+        
+        <div class="column-right">
+            <h2>Verify Data</h2>
+            <p>Anda dapat menandai data yang telah diverifikasi di sini.</p>
+            <a href="">Verify Data</a>
+        </div>
     </section>
 
     <!-- Modal -->
