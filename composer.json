@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.8",
         "phpseclib/phpseclib": "^2.0",
         "ramsey/uuid": "^4.7",
+        "tecnickcom/tcpdf": "^6.6",
         "wdalmut/rc4-support": "^0.0.1"
     },
     "require-dev": {

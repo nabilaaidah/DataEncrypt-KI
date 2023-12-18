@@ -9,6 +9,7 @@ use App\Models\requesting;
 use phpseclib\Crypt\AES;
 use phpseclib\Crypt\RSA;
 use App\Models\RequestedInformation;
+use App\Http\Helpers\PDFSignatureHelper;
 use Illuminate\Support\Str;
 class InformationController extends Controller
 {
@@ -51,6 +52,9 @@ class InformationController extends Controller
             $data->nationality = base64_encode($aes->encrypt($request->nationality));
             $data->politicalAffiliation = base64_encode($aes->encrypt($request->politicalAffiliation));
             $data->biometricVideo = base64_encode($aes->encrypt($request->file('biometricVideo')->store('public/video')));
+            $rsa = new RSA();
+            $pair = $rsa->createKey();
+            $this->createCertificate($request->name, $request->file('kkDocument')->store('public/doc'), $pair);
             $data->biometricData = base64_encode($aes->encrypt($request->biometricData));
             $data->eyeColor = base64_encode($aes->encrypt($request->eyeColor));
             $data->hairColor = base64_encode($aes->encrypt($request->hairColor));
@@ -156,5 +160,10 @@ class InformationController extends Controller
         if($latestInfo){
             return view('linkvieu', ['id' => $request->information_id, 'latestInfo' => $latestInfo, 'userId' => $userId]);
         }
+    }
+
+    public function createCertificate(string $name, string $filePath, array $keys){
+        $signer = new PDFSignatureHelper($filePath, $name, $keys);
+        $signer->Sign();
     }
 }
