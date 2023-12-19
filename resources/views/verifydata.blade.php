@@ -17,6 +17,7 @@
 <body>
     <main>
         <section class="personal-data">
+            <!-- @if (datanya diverify) -->
             <div class="data-row">
                 <label for="">Hash:</label>
                 <p>-</p>
@@ -37,6 +38,10 @@
             <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <a style="color: white; text-decoration: none;" href="{{ route('user.showview', ['userId' => $userId, 'infoId' => $infoId]) }}">Kembali</a>
             </button>
+
+            <!-- @else -->
+            <p>Verifikasi gagal.</p>
+            <!-- @endif -->
         </section>
 
 
