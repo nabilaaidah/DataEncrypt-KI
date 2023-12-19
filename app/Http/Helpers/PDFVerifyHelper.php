@@ -4,20 +4,20 @@ namespace App\Http\Helpers;
 use phpseclib\Crypt\RSA;
 
 class PDFVerifyHelper{
-    private array $keys;
+    private string $pubkey;
 
     private array $info;
     private string $filePath;
 
-    public function __construct(string $filePath, array $keys){
-        $this->keys = $keys;
+    public function __construct(string $filePath, string $pubkey){
+        $this->pubkey = $pubkey;
         $this->filePath = $filePath;
         $this->BreakData();
     }
 
     public function Verify(){
         $rsa = new RSA();
-        $rsa->loadKey($this->keys["publickey"]);
+        $rsa->loadKey($this->pubkey);
         $file = file_get_contents($this->filePath);
         $originalBlock= explode("\n====BEGIN_SIGNATURE====", $file)[0];
         $encHash = $this->info['hash'];

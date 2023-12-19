@@ -30,12 +30,12 @@ class PDFSignatureHelper
                                 "/SubFilter/adbe.pkcs7.detached\n" .
                                 "/Type/Sig\n".
                                 "endobj\n";
-    private array $keys;
+    private string $privkey;
     private string $info;
     private string $name;
     private string $filePath;
-    public function __construct(string $filePath, string $name, array $keys){
-        $this->keys = $keys;
+    public function __construct(string $filePath, string $name, string $privkey){
+        $this->privkey = $privkey;
         $this->name = $name;
         $this->filePath = $filePath;
     }
@@ -74,7 +74,7 @@ class PDFSignatureHelper
 
     private function EncryptHash(){
         $rsa = new RSA();
-        $rsa->loadKey($this->keys['privatekey']);
+        $rsa->loadKey($this->privkey);
         $this->info = base64_encode($rsa->encrypt($this->info));
     }
 
