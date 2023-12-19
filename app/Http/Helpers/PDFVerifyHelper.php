@@ -15,17 +15,36 @@ class PDFVerifyHelper{
         $this->BreakData();
     }
 
-    public function VerifyHash(){
+    public function Verify(){
         $rsa = new RSA();
         $rsa->loadKey($this->keys["publickey"]);
         $file = file_get_contents($this->filePath);
         $originalBlock= explode("\n====BEGIN_SIGNATURE====", $file)[0];
         $encHash = $this->info['hash'];
-        $information = $rsa->decrypt(base64_decode($encHash));
-        if(strcmp($information, hash("sha256", $originalBlock)) == 0){
-            return ["information" => $information, "originalBlock" => hash("sha256", $originalBlock)];
+        $decodedInformation = base64_decode($encHash);
+        $information = $rsa->decrypt($decodedInformation);
+        $hashedFile = trim(hash("sha256", $originalBlock),'\n');
+        echo $information;
+        echo $hashedFile;
+        try{
+        if(strcmp($information, $hashedFile) == 0){
+            return ["FileHash" => $information,
+                    "LastModifiedDate" => $this->info['date'],
+                    "Issuer" => $this->info['issuer'],
+                    "SignatureDate" => $this->info['signatureDate'],
+                    "status" => true];
         }
-         return false;
+         return [
+            "FileHash" =>  null,
+            "status" => false,
+        ];
+        }
+        catch(\Exception $e){
+            return [
+                "FileHash" =>  null,
+                "status" => false,
+            ];
+        }
     }
 
     private function BreakData(){

@@ -41,13 +41,18 @@ class PDFSignatureHelper
     }
 
     public function Sign(){
-        $this->HashInformation();
-        $this->EncryptHash();
-        $this->WriteHash();
-        $this->WriteName();
-        $this->WriteDate();
-        $this->WriteDateTime();
-        $this->CalculateByteRange();
+        try{
+            $this->HashInformation();
+            $this->WriteHash();
+            $this->WriteName();
+            $this->WriteDate();
+            $this->WriteDateTime();
+            $this->CalculateByteRange();
+        }
+        catch(\Exception $e){
+            return false;
+        }
+        return true;
     }
 
     public function HashInformation(){
