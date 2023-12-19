@@ -179,9 +179,17 @@
                 <form>
                     @csrf
                     <div class="form-group">
+<<<<<<< HEAD
                         <!-- <input type="hidden" name="info_id" value="{/{/ $info->id }}"> -->
                         <!-- <input type="hidden" name="kk?????" value="{/{/ $latestInfo->kkDocument }}"> -->
                         <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal" id="verify-button">Verify</button>
+=======
+                        <!-- <input type="hidden" name="info_id" value="{{ $info->id }}"> -->
+                        <!-- <input type="hidden" name="kk?????" value="{{ $latestInfo->kkDocument }}"> -->
+                        <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <a style="color: white; text-decoration: none;" href="#">Verify</a>
+                        </button>
+>>>>>>> f35bb1e (add verify page)
                     </div>
                 </form>
             </td>
@@ -191,6 +199,7 @@
         <p> No data showed </p>
         @endif
 
+<<<<<<< HEAD
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -210,6 +219,8 @@
                     </div>
                 </div>
             </div>
+=======
+>>>>>>> f35bb1e (add verify page)
     </main>
 
     <footer>
