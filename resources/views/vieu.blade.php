@@ -181,7 +181,9 @@
                     <div class="form-group">
                         <!-- <input type="hidden" name="info_id" value="{{ $info->id }}"> -->
                         <!-- <input type="hidden" name="kk?????" value="{{ $latestInfo->kkDocument }}"> -->
-                        <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal">Verify</button>
+                        <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <a style="color: white; text-decoration: none;" href="#">Verify</a>
+                        </button>
                     </div>
                 </form>
             </td>
@@ -191,25 +193,6 @@
         <p> No data showed </p>
         @endif
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- @if (datanya diverify) -->
-                        <!-- <p>Hash: {{ }}</p>
-                        <p>Block: {{ }}</p>
-                        <p>Issuer: {{ }}</p>
-                        <p>Signature data: {{ }}</p>
-                        @else
-                        <p>Verifikasi gagal.</p>
-                        @endif -->
-                    </div>
-                </div>
-            </div>
     </main>
 
     <footer>
