@@ -4,6 +4,7 @@ use App\Http\Controllers\InformationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\VerifyController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -69,6 +70,9 @@ Route::middleware(['auth'])->group(function (){
 
     // Mail
     Route::get('/user/sendEmail/{requestId}', [RequestController::class, 'sendEmail'])->name('request.sendemail');
+
+    // Verify
+    Route::get('user/verify/{userId}/{requestedId}', [InformationController::class, 'verify']);
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

@@ -30,11 +30,11 @@ class PDFSignatureHelper
                                 "/SubFilter/adbe.pkcs7.detached\n" .
                                 "/Type/Sig\n".
                                 "endobj\n";
-    private string $privkey;
+    private array $privkey;
     private string $info;
     private string $name;
     private string $filePath;
-    public function __construct(string $filePath, string $name, string $privkey){
+    public function __construct(string $filePath, string $name, array $privkey){
         $this->privkey = $privkey;
         $this->name = $name;
         $this->filePath = $filePath;

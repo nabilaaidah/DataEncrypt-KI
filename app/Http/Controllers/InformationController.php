@@ -10,9 +10,12 @@ use phpseclib\Crypt\AES;
 use phpseclib\Crypt\RSA;
 use App\Models\RequestedInformation;
 use App\Http\Helpers\PDFSignatureHelper;
+use App\Http\Helpers\PDFVerifyHelper;
 use Illuminate\Support\Str;
 class InformationController extends Controller
 {
+    private string $filepath;
+    private string $key;
     function storeInformation(Request $request){
         try{
             $request->validate([
@@ -98,6 +101,7 @@ class InformationController extends Controller
         $latestInfo->languages = $aes->decrypt(base64_decode($latestInfo->languages));
         $latestInfo->nationality = $aes->decrypt(base64_decode($latestInfo->nationality));
         $latestInfo->politicalAffiliation = $aes->decrypt(base64_decode($latestInfo->politicalAffiliation));
+        $latestInfo->biometricData = $aes->decrypt(base64_decode($latestInfo->biometricData));
         $latestInfo->eyeColor = $aes->decrypt(base64_decode($latestInfo->eyeColor));
         $latestInfo->hairColor = $aes->decrypt(base64_decode($latestInfo->hairColor));
         $latestInfo->photo1 = $aes->decrypt(base64_decode($latestInfo->photo1));
@@ -165,5 +169,31 @@ class InformationController extends Controller
     public function createCertificate(string $name, string $filePath, array $keys){
         $signer = new PDFSignatureHelper($filePath, $name, $keys);
         $signer->Sign();
+    }
+
+    public function verify($userId, $requestedId)
+    {
+        $filePath = $this->filepath;
+        $key = $this->key;
+        $verifier = new PDFVerifyHelper($filePath, $key);
+
+        $verifyStatus = $verifier->Verify();
+        if($verifyStatus['status'] === true)
+        {
+            $data = [
+                "FileHash" => $verifyStatus['FileHash'],
+                "LastModifiedDate" => $verifyStatus['LastModifiedData'],
+                "Issuer" => $verifyStatus['Issuer'],
+                "SignatureDate" => $verifyStatus['SignatureData'],
+                "status" => true
+            ];
+        }
+        else
+        {
+            $data = [
+                "FileHash" => $verifyStatus['FileHash'],
+                "status" => false
+            ];
+        }
     }
 }

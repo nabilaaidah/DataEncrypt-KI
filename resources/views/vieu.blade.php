@@ -179,9 +179,9 @@
                 <form>
                     @csrf
                     <div class="form-group">
-                        <!-- <input type="hidden" name="info_id" value="{{ $info->id }}"> -->
-                        <!-- <input type="hidden" name="kk?????" value="{{ $latestInfo->kkDocument }}"> -->
-                        <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal">Verify</button>
+                        <!-- <input type="hidden" name="info_id" value="{/{/ $info->id }}"> -->
+                        <!-- <input type="hidden" name="kk?????" value="{/{/ $latestInfo->kkDocument }}"> -->
+                        <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal" id="verify-button">Verify</button>
                     </div>
                 </form>
             </td>
@@ -199,14 +199,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- @if (datanya diverify) -->
-                        <!-- <p>Hash: {{ }}</p>
-                        <p>Block: {{ }}</p>
-                        <p>Issuer: {{ }}</p>
-                        <p>Signature data: {{ }}</p>
-                        @else
+                        <!-- if (datanya diverify) -->
+                        <!-- <p>Hash: {/{/ }}</p>
+                        <p>Block: {/{/ }}</p>
+                        <p>Issuer: {/{/ }}</p>
+                        <p>Signature data: {/{/ }}</p>
+                        else
                         <p>Verifikasi gagal.</p>
-                        @endif -->
+                        endif -->
                     </div>
                 </div>
             </div>
@@ -215,6 +215,15 @@
     <footer>
         &copy; 2023
     </footer>
+
+    <script>
+        const baseUrl = '/user/verify/';
+        const url = `${baseUrl}${userId}/${id}`;
+        const verifyButton = document.getElementById('verify-button');
+        verifyButton.addEventListener('click', function() {
+            window.location.href = url;
+        });
+    </script>
 </body>
 
 </html>
