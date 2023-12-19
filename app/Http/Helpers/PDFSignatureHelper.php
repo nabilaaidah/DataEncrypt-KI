@@ -4,31 +4,32 @@ namespace App\Http\Helpers;
 use phpseclib\Crypt\RSA;
 class PDFSignatureHelper
 {
-    
-    private string $sig =   "24 0 obj\n" .
-                            "/ByteRange[ 0 FILELENGTH LEN TRAILLEN]\n" .
-                            "/Contents<THEHASH>\n" .
-                            "/Filter/Adobe.PPKLite\n" .
-                            "/M(D:20231211162228+07'00')\n" .
-                            "/Name(THEUSER)\n" .
-                            "/Prop_Build<<\n" .
-                            "  /App<<\n" .
-                            "    /Name/Adobe#20Acrobat#20Reader#20#2864-bit#29/OS[/Win]/R 1508864/REx(2023.006.20380)/TrustedMode true\n" .
-                            "  >>\n" .
-                            "  /Filter<<\n" .
-                            "    /Date(Nov  5 2023 03:48:10)\n" .
-                            "    /Name/Adobe.PPKLite\n" .
-                            "    /R 131104\n" .
-                            "    /V 2\n" .
-                            "  >>\n" .
-                            "  /PubSec<<\n" .
-                            "    /Date(Nov  5 2023 03:48:10)\n" .
-                            "    /R 131105\n" .
-                            "  >>\n" .
-                            ">>\n" .
-                            "/SubFilter/adbe.pkcs7.detached\n" .
-                            "/Type/Sig".
-                            "endobj\n";
+    private string $obj     =   "====BEGIN_SIGNATURE====\n24 0 obj\n";
+    private string $header  =   "<<//ByteRange[ 0 FILELENGTH HASHLEN TRAILLEN]\n/Contents<";
+    private string $sig;
+
+    private string $hashres;
+    private string $trailer =   ">\n" .
+                                "/Filter/Adobe.PPKLite\n" .
+                                "/M(D:20231211162228+07'00')\n" .
+                                "/Name(THEUSER)\n" .
+                                "/Prop_Build<<\n" .
+                                "/App<<\n" .
+                                "/Name/Adobe#20Acrobat#20Reader#20#2864-bit#29/OS[/Win]/R 1508864/REx(2023.006.20380)/TrustedMode true\n" .
+                                ">>\n" .
+                                "/Filter<<\n" .
+                                "/Date(THEDATE)\n" .
+                                "/Name/Adobe.PPKLite\n" .
+                                "/R 131104\n" .
+                                "/V 2\n" .
+                                ">>\n" .
+                                "/PubSec<<\n" .
+                                "/Date(THEDATE)\n" .
+                                "/R 131105\n" .
+                                ">>\n" .
+                                "/SubFilter/adbe.pkcs7.detached\n" .
+                                "/Type/Sig\n".
+                                "endobj\n";
     private array $keys;
     private string $info;
     private string $name;
@@ -50,51 +51,46 @@ class PDFSignatureHelper
     }
 
     public function HashInformation(){
-        $this->filePath = str_replace("public", "../../../../public/storage", $this->filePath);
-        $this->info = file_get_contents($this->filePath);
-        $this->info = hash('SHA256', $this->filePath);
+        $hashes = file_get_contents($this->filePath);
+        $this->info = hash("sha256", $hashes);
     }
     private function WriteDate(){
         $date = date("YmdHis");
-        $this->sig = str_replace("20231211162228", $date, $this->sig);
+        $this->trailer = str_replace("20231211162228", $date, $this->trailer);
     }
     private function WriteName(){
-        $this->sig = str_replace("THEUSER", $this->name, $this->sig);
+        $this->trailer = str_replace("THEUSER", $this->name, $this->trailer);
     }
-    //replace date (Nov  5 2023 03:48:10) with current date time
+
     private function WriteDateTime(){
         $date = date("M  d Y H:i:s");
-        $this->sig = str_replace("Nov  5 2023 03:48:10", $date, $this->sig);
+        $this->trailer = str_replace("THEDATE", $date, $this->trailer);
     }
 
     private function EncryptHash(){
         $rsa = new RSA();
         $rsa->loadKey($this->keys['privatekey']);
-        $rsa->setSignatureMode(RSA::SIGNATURE_PKCS1);
-        $this->info = bin2hex($rsa->sign($this->info));
+        $this->info = base64_encode($rsa->encrypt($this->info));
+    }
+
+    public function GetInfo(){
+        return $this->hashres;
     }
     private function WriteHash(){
         $this->EncryptHash();
-        $this->sig = str_replace("THEHASH", $this->info, $this->sig);
-    }
-
-    public function GetSignature(){
-        return $this->sig;
+        $this->sig = $this->info;
     }
 
     public function CalculateByteRange(){
-        $file = fopen($this->filePath, 'rb');
-        $partition = explode('>\n', $this->sig);
-        $trailLen = strlen($partition[1]);
-        $fileLength = filesize($file);
-        $data = $file;
-        $hashLength = strlen('<'.$this->info.'>');
-        str_replace("TRAILLEN", $trailLen, $this->sig);
-        str_replace("FILELENGTH", $fileLength, $this->sig);
-        str_replace("LEN", $hashLength+$fileLength, $this->sig);
-        fclose($file);
-        $file = fopen($this->filePath, 'wb');
-        fwrite($file, $data);
-        fwrite($file, $this->sig);
+        $file = file_get_contents($this->filePath);
+        $fileLength = filesize($this->filePath);
+        $hashLength = strlen($this->info);
+        $trailLen = strlen($this->trailer);
+        $objlen = strlen($this->obj);
+        $this->header = str_replace("TRAILLEN", $trailLen, $this->header);
+        $this->header = str_replace("FILELENGTH", $fileLength+46+$objlen, $this->header);
+        $this->header = str_replace("HASHLEN", $fileLength+47+$objlen+$hashLength, $this->header);
+        $data = $file."\n".$this->obj.$this->header.$this->sig.$this->trailer."%%EOF";
+        file_put_contents($this->filePath, $data);
     }
 }
