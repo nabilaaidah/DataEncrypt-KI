@@ -17,31 +17,31 @@
 <body>
     <main>
         <section class="personal-data">
-            <!-- @if (datanya diverify) -->
+            @if ($data['status'] === true)
             <div class="data-row">
                 <label for="">Hash:</label>
-                <p>-</p>
+                <p>{{ $data['FileHash'] }}</p>
             </div>
             <div class="data-row">
                 <label for="">Date:</label>
-                <p>-</p>
+                <p>{{ $data['LastModifiedDate'] }}</p>
             </div>
             <div class="data-row">
                 <label for="">Issuer:</label>
-                <p>-</p>
+                <p>{{ $data['Issuer'] }}</p>
             </div>
             <div class="data-row">
                 <label for="">Signature date:</label>
-                <p>-</p>
+                <p>{{ $data['SignatureDate'] }}</p>
             </div>
 
             <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <a style="color: white; text-decoration: none;" href="{{ route('user.showview', ['userId' => $userId, 'infoId' => $infoId]) }}">Kembali</a>
+                <a style="color: white; text-decoration: none;" href="{{ route('user.showview', ['userId' => $userId, 'id' => $infoId]) }}">Kembali</a>
             </button>
 
-            <!-- @else -->
+            @else
             <p>Verifikasi gagal.</p>
-            <!-- @endif -->
+            @endif
         </section>
 
 
