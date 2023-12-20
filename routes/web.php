@@ -72,7 +72,7 @@ Route::middleware(['auth'])->group(function (){
     Route::get('/user/sendEmail/{requestId}', [RequestController::class, 'sendEmail'])->name('request.sendemail');
 
     // Verify
-    Route::get('user/verify/{userId}/{requestedId}', [InformationController::class, 'verify']);
+    Route::get('user/verify/{userId}/{requestedId}', [InformationController::class, 'verify'])->name('verify');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

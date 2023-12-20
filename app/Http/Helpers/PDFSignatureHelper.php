@@ -30,33 +30,33 @@ class PDFSignatureHelper
                                 "/SubFilter/adbe.pkcs7.detached\n" .
                                 "/Type/Sig\n".
                                 "endobj\n";
-    private array $privkey;
+    private string $privkey;
     private string $info;
     private string $name;
     private string $filePath;
-    public function __construct(string $filePath, string $name, array $privkey){
+    public function __construct(string $filePath, string $name, string $privkey){
         $this->privkey = $privkey;
         $this->name = $name;
         $this->filePath = $filePath;
     }
 
     public function Sign(){
-        try{
-            $this->HashInformation();
-            $this->WriteHash();
-            $this->WriteName();
-            $this->WriteDate();
-            $this->WriteDateTime();
-            $this->CalculateByteRange();
-        }
-        catch(\Exception $e){
-            return false;
-        }
+        
+        $this->HashInformation();
+        $this->WriteHash();
+        $this->WriteName();
+        $this->WriteDate();
+        $this->WriteDateTime();
+        $this->CalculateByteRange();
+    
+
         return true;
     }
 
     public function HashInformation(){
-        $hashes = file_get_contents($this->filePath);
+        $filename = basename($this->filePath);
+        $modifiedPath = 'app/public/doc/' . $filename;
+        $hashes = file_get_contents(storage_path($modifiedPath));
         $this->info = hash("sha256", $hashes);
     }
     private function WriteDate(){
@@ -87,8 +87,10 @@ class PDFSignatureHelper
     }
 
     public function CalculateByteRange(){
-        $file = file_get_contents($this->filePath);
-        $fileLength = filesize($this->filePath);
+        $filename = basename($this->filePath);
+        $modifiedPath = 'app/public/doc/' . $filename;
+        $file = file_get_contents(storage_path($modifiedPath));
+        $fileLength = filesize(storage_path($modifiedPath));
         $hashLength = strlen($this->info);
         $trailLen = strlen($this->trailer);
         $objlen = strlen($this->obj);
@@ -96,6 +98,16 @@ class PDFSignatureHelper
         $this->header = str_replace("FILELENGTH", $fileLength+46+$objlen, $this->header);
         $this->header = str_replace("HASHLEN", $fileLength+47+$objlen+$hashLength, $this->header);
         $data = $file."\n".$this->obj.$this->header.$this->sig.$this->trailer."%%EOF";
-        file_put_contents($this->filePath, $data);
+        file_put_contents(storage_path($modifiedPath), $data);
+    }
+
+    public function getFilePath()
+    {
+        return $this->filePath;
+    }
+
+    public function getKey()
+    {
+        return $this->privkey;
     }
 }

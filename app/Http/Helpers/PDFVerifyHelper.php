@@ -18,14 +18,16 @@ class PDFVerifyHelper{
     public function Verify(){
         $rsa = new RSA();
         $rsa->loadKey($this->pubkey);
-        $file = file_get_contents($this->filePath);
+        $filename = basename($this->filePath);
+        $modifiedPath = 'app/public/doc/' . $filename;
+        $file = file_get_contents(storage_path($modifiedPath));
         $originalBlock= explode("\n====BEGIN_SIGNATURE====", $file)[0];
         $encHash = $this->info['hash'];
         $decodedInformation = base64_decode($encHash);
         $information = $rsa->decrypt($decodedInformation);
         $hashedFile = trim(hash("sha256", $originalBlock),'\n');
-        echo $information;
-        echo $hashedFile;
+        // echo $information;
+        // echo $hashedFile;
         try{
         if(strcmp($information, $hashedFile) == 0){
             return ["FileHash" => $information,
@@ -48,7 +50,9 @@ class PDFVerifyHelper{
     }
 
     private function BreakData(){
-        $file = file_get_contents($this->filePath);
+        $filename = basename($this->filePath);
+        $modifiedPath = 'app/public/doc/' . $filename;
+        $file = file_get_contents(storage_path($modifiedPath));
         $signatureBlock = explode("\n====BEGIN_SIGNATURE====\n", $file)[1];
 
         //Get Hash Block

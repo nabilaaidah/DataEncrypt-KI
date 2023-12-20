@@ -133,7 +133,7 @@
             </div>
             <div class="data-row">
                 <label for="biometricData">Data Biometrik Lainnya:</label>
-                <p>{{ $latestInfo->biometricData }}a</p>
+                <p>{{ $latestInfo->biometricData }}</p>
             </div>
             <div class="data-row">
                 <label for="eyeColor">Warna Mata:</label>
@@ -180,14 +180,17 @@
                     @csrf
                     <div class="form-group">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <!-- <input type="hidden" name="info_id" value="{/{/ $info->id }}"> -->
                         <!-- <input type="hidden" name="kk?????" value="{/{/ $latestInfo->kkDocument }}"> -->
                         <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal" id="verify-button">Verify</button>
 =======
                         <!-- <input type="hidden" name="info_id" value="{{ $info->id }}"> -->
                         <!-- <input type="hidden" name="kk?????" value="{{ $latestInfo->kkDocument }}"> -->
+=======
+>>>>>>> 28fa685 (feat: update be digsig)
                         <button type="button" class="btn lihat px-2 py-1 dist" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <a style="color: white; text-decoration: none;" href="#">Verify</a>
+                            <a style="color: white; text-decoration: none;" href="{{ route('verify', ['userId' => $userId, 'requestedId'=> $id]) }}?filepath={{ $latestInfo->kkDocument }}">Verify</a>
                         </button>
 >>>>>>> f35bb1e (add verify page)
                     </div>
@@ -226,15 +229,6 @@
     <footer>
         &copy; 2023
     </footer>
-
-    <script>
-        const baseUrl = '/user/verify/';
-        const url = `${baseUrl}${userId}/${id}`;
-        const verifyButton = document.getElementById('verify-button');
-        verifyButton.addEventListener('click', function() {
-            window.location.href = url;
-        });
-    </script>
 </body>
 
 </html>

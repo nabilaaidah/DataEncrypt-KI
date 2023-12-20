@@ -11,6 +11,7 @@ use phpseclib\Crypt\RSA;
 use App\Models\RequestedInformation;
 use App\Http\Helpers\PDFSignatureHelper;
 use App\Http\Helpers\PDFVerifyHelper;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Support\Str;
 class InformationController extends Controller
 {
@@ -29,6 +30,10 @@ class InformationController extends Controller
             ]);
 
             $userId = $request->route('userId');
+            $user = new user();
+            $userdata = $user->where('id', $userId)->first();
+            $privkey = $userdata->privkey;
+
             $aes = new AES();
             $symkey = Str::random(64);
             $aes->setKey($symkey);
@@ -55,16 +60,17 @@ class InformationController extends Controller
             $data->nationality = base64_encode($aes->encrypt($request->nationality));
             $data->politicalAffiliation = base64_encode($aes->encrypt($request->politicalAffiliation));
             $data->biometricVideo = base64_encode($aes->encrypt($request->file('biometricVideo')->store('public/video')));
-            $rsa = new RSA();
-            $pair = $rsa->createKey();
-            $this->createCertificate($request->name, $request->file('kkDocument')->store('public/doc'), $pair);
+            $kkDocumentName = $request->file('kkDocument')->store('public/doc');
+            $signer = new PDFSignatureHelper($kkDocumentName, $data->nama, $privkey);
+            $signer->Sign();
             $data->biometricData = base64_encode($aes->encrypt($request->biometricData));
             $data->eyeColor = base64_encode($aes->encrypt($request->eyeColor));
             $data->hairColor = base64_encode($aes->encrypt($request->hairColor));
-            $data->kkDocument = base64_encode($aes->encrypt($request->file('kkDocument')->store('public/doc')));
             $data->photo1 = base64_encode($aes->encrypt($request->file('photo1')->store('public/photo')));
+            $data->kkDocument = base64_encode($aes->encrypt($kkDocumentName));
             $data->user_id = $userId;
             $data->save();
+
             return redirect()->route('user.dashboard', ['userId' => $userId]);
         }
         catch (\Illuminate\Validation\ValidationException $e){
@@ -166,25 +172,27 @@ class InformationController extends Controller
         }
     }
 
-    public function createCertificate(string $name, string $filePath, array $keys){
+    public function createCertificate(string $name, string $filePath, string $keys){
         $signer = new PDFSignatureHelper($filePath, $name, $keys);
         $signer->Sign();
     }
 
     public function verify($userId, $requestedId)
     {
-        $filePath = $this->filepath;
-        $key = $this->key;
-        $verifier = new PDFVerifyHelper($filePath, $key);
+        $user = new user();
+        $userdata = $user->where('id', $userId)->first();
+        $pubkey = $userdata->pubkey;
+        $filepath = request()->query('filepath');
+        $verifier = new PDFVerifyHelper($filepath, $pubkey);
 
         $verifyStatus = $verifier->Verify();
         if($verifyStatus['status'] === true)
         {
             $data = [
                 "FileHash" => $verifyStatus['FileHash'],
-                "LastModifiedDate" => $verifyStatus['LastModifiedData'],
+                "LastModifiedDate" => $verifyStatus['LastModifiedDate'],
                 "Issuer" => $verifyStatus['Issuer'],
-                "SignatureDate" => $verifyStatus['SignatureData'],
+                "SignatureDate" => $verifyStatus['SignatureDate'],
                 "status" => true
             ];
         }
@@ -195,5 +203,7 @@ class InformationController extends Controller
                 "status" => false
             ];
         }
+
+        return view('verifydata', ['userId' => $userId, 'infoId' => $requestedId])->with('data', $data);
     }
 }
